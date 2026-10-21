@@ -6,9 +6,9 @@
    "size": "mega",
    "hero": {
     "type": "image",
-    "url": "https://chiubeta.github.io/bni-card/img/card.jpg",
+    "url": "https://chiubeta.github.io/bni-card/img/hero.jpg",
     "size": "full",
-    "aspectRatio": "2:3",
+    "aspectRatio": "4:5",
     "aspectMode": "cover",
     "action": {
      "type": "uri",
@@ -48,7 +48,7 @@
      },
      {
       "type": "text",
-      "text": "★系統開發★生成圖片★生成影片\n★生成音樂★生成 3D 模型★個人助理",
+      "text": "★系統開發★個人助理\n★生成圖片★生成影片",
       "wrap": true,
       "size": "sm",
       "color": "#9DB3D3",
@@ -143,6 +143,87 @@
      {
       "type": "text",
       "text": "☆重複作業交給程式跑",
+      "wrap": true,
+      "size": "md",
+      "color": "#FFFFFF"
+     }
+    ]
+   },
+   "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "backgroundColor": "#0B1730",
+    "contents": [
+     {
+      "type": "button",
+      "style": "primary",
+      "height": "sm",
+      "color": "#06C755",
+      "action": {
+       "type": "uri",
+       "label": "私訊我聊這個",
+       "uri": "https://line.me/ti/p/~beta0805"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "type": "bubble",
+   "size": "mega",
+   "hero": {
+    "type": "image",
+    "url": "https://chiubeta.github.io/bni-card/img/s6.jpg",
+    "size": "full",
+    "aspectRatio": "1:1",
+    "aspectMode": "cover"
+   },
+   "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "sm",
+    "backgroundColor": "#0B1730",
+    "contents": [
+     {
+      "type": "text",
+      "text": "個人助理",
+      "wrap": true,
+      "weight": "bold",
+      "size": "xl",
+      "color": "#FFFFFF"
+     },
+     {
+      "type": "text",
+      "text": "Grok Bot",
+      "wrap": true,
+      "size": "sm",
+      "color": "#4FD8FF"
+     },
+     {
+      "type": "text",
+      "text": "可以幫你做",
+      "wrap": true,
+      "size": "sm",
+      "color": "#9DB3D3",
+      "margin": "md"
+     },
+     {
+      "type": "text",
+      "text": "☆整理資料、會議摘要",
+      "wrap": true,
+      "size": "md",
+      "color": "#FFFFFF"
+     },
+     {
+      "type": "text",
+      "text": "☆行程與待辦提醒",
+      "wrap": true,
+      "size": "md",
+      "color": "#FFFFFF"
+     },
+     {
+      "type": "text",
+      "text": "☆客人常見問題自動回覆",
       "wrap": true,
       "size": "md",
       "color": "#FFFFFF"
@@ -305,249 +386,6 @@
      {
       "type": "text",
       "text": "☆一張圖變成動態影片",
-      "wrap": true,
-      "size": "md",
-      "color": "#FFFFFF"
-     }
-    ]
-   },
-   "footer": {
-    "type": "box",
-    "layout": "vertical",
-    "backgroundColor": "#0B1730",
-    "contents": [
-     {
-      "type": "button",
-      "style": "primary",
-      "height": "sm",
-      "color": "#06C755",
-      "action": {
-       "type": "uri",
-       "label": "私訊我聊這個",
-       "uri": "https://line.me/ti/p/~beta0805"
-      }
-     }
-    ]
-   }
-  },
-  {
-   "type": "bubble",
-   "size": "mega",
-   "hero": {
-    "type": "image",
-    "url": "https://chiubeta.github.io/bni-card/img/s4.jpg",
-    "size": "full",
-    "aspectRatio": "1:1",
-    "aspectMode": "cover"
-   },
-   "body": {
-    "type": "box",
-    "layout": "vertical",
-    "spacing": "sm",
-    "backgroundColor": "#0B1730",
-    "contents": [
-     {
-      "type": "text",
-      "text": "生成音樂",
-      "wrap": true,
-      "weight": "bold",
-      "size": "xl",
-      "color": "#FFFFFF"
-     },
-     {
-      "type": "text",
-      "text": "Suno V6",
-      "wrap": true,
-      "size": "sm",
-      "color": "#4FD8FF"
-     },
-     {
-      "type": "text",
-      "text": "可以幫你做",
-      "wrap": true,
-      "size": "sm",
-      "color": "#9DB3D3",
-      "margin": "md"
-     },
-     {
-      "type": "text",
-      "text": "☆品牌形象歌",
-      "wrap": true,
-      "size": "md",
-      "color": "#FFFFFF"
-     },
-     {
-      "type": "text",
-      "text": "☆廣告、影片專屬配樂",
-      "wrap": true,
-      "size": "md",
-      "color": "#FFFFFF"
-     },
-     {
-      "type": "text",
-      "text": "☆店內背景音樂",
-      "wrap": true,
-      "size": "md",
-      "color": "#FFFFFF"
-     }
-    ]
-   },
-   "footer": {
-    "type": "box",
-    "layout": "vertical",
-    "backgroundColor": "#0B1730",
-    "contents": [
-     {
-      "type": "button",
-      "style": "primary",
-      "height": "sm",
-      "color": "#06C755",
-      "action": {
-       "type": "uri",
-       "label": "私訊我聊這個",
-       "uri": "https://line.me/ti/p/~beta0805"
-      }
-     }
-    ]
-   }
-  },
-  {
-   "type": "bubble",
-   "size": "mega",
-   "hero": {
-    "type": "image",
-    "url": "https://chiubeta.github.io/bni-card/img/s5.jpg",
-    "size": "full",
-    "aspectRatio": "1:1",
-    "aspectMode": "cover"
-   },
-   "body": {
-    "type": "box",
-    "layout": "vertical",
-    "spacing": "sm",
-    "backgroundColor": "#0B1730",
-    "contents": [
-     {
-      "type": "text",
-      "text": "生成 3D 模型",
-      "wrap": true,
-      "weight": "bold",
-      "size": "xl",
-      "color": "#FFFFFF"
-     },
-     {
-      "type": "text",
-      "text": "Tripo",
-      "wrap": true,
-      "size": "sm",
-      "color": "#4FD8FF"
-     },
-     {
-      "type": "text",
-      "text": "可以幫你做",
-      "wrap": true,
-      "size": "sm",
-      "color": "#9DB3D3",
-      "margin": "md"
-     },
-     {
-      "type": "text",
-      "text": "☆商品 3D 展示模型",
-      "wrap": true,
-      "size": "md",
-      "color": "#FFFFFF"
-     },
-     {
-      "type": "text",
-      "text": "☆3D 列印打樣",
-      "wrap": true,
-      "size": "md",
-      "color": "#FFFFFF"
-     },
-     {
-      "type": "text",
-      "text": "☆網頁 360° 商品展示",
-      "wrap": true,
-      "size": "md",
-      "color": "#FFFFFF"
-     }
-    ]
-   },
-   "footer": {
-    "type": "box",
-    "layout": "vertical",
-    "backgroundColor": "#0B1730",
-    "contents": [
-     {
-      "type": "button",
-      "style": "primary",
-      "height": "sm",
-      "color": "#06C755",
-      "action": {
-       "type": "uri",
-       "label": "私訊我聊這個",
-       "uri": "https://line.me/ti/p/~beta0805"
-      }
-     }
-    ]
-   }
-  },
-  {
-   "type": "bubble",
-   "size": "mega",
-   "hero": {
-    "type": "image",
-    "url": "https://chiubeta.github.io/bni-card/img/s6.jpg",
-    "size": "full",
-    "aspectRatio": "1:1",
-    "aspectMode": "cover"
-   },
-   "body": {
-    "type": "box",
-    "layout": "vertical",
-    "spacing": "sm",
-    "backgroundColor": "#0B1730",
-    "contents": [
-     {
-      "type": "text",
-      "text": "個人助理",
-      "wrap": true,
-      "weight": "bold",
-      "size": "xl",
-      "color": "#FFFFFF"
-     },
-     {
-      "type": "text",
-      "text": "Grok Bot",
-      "wrap": true,
-      "size": "sm",
-      "color": "#4FD8FF"
-     },
-     {
-      "type": "text",
-      "text": "可以幫你做",
-      "wrap": true,
-      "size": "sm",
-      "color": "#9DB3D3",
-      "margin": "md"
-     },
-     {
-      "type": "text",
-      "text": "☆整理資料、會議摘要",
-      "wrap": true,
-      "size": "md",
-      "color": "#FFFFFF"
-     },
-     {
-      "type": "text",
-      "text": "☆行程與待辦提醒",
-      "wrap": true,
-      "size": "md",
-      "color": "#FFFFFF"
-     },
-     {
-      "type": "text",
-      "text": "☆客人常見問題自動回覆",
       "wrap": true,
       "size": "md",
       "color": "#FFFFFF"

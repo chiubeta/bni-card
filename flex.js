@@ -1,6 +1,7 @@
 // Flex Message 輪播：名片 → 課程招生 → 陪跑諮詢 → 4 張服務卡。瀏覽器與 node 共用（node 用來輸出 flex.json 給 Flex Simulator）
 (function (root) {
   const NAVY = "#0B1730";
+  const V = "?v=3"; // 換圖時改這個，避免 LINE 用到舊快取
   const CYAN = "#4FD8FF";
   const MUTED = "#9DB3D3";
   const LINE_GREEN = "#06C755";
@@ -28,7 +29,7 @@
     if (cfg.liffId) footer.push(btn("分享給好友", "https://liff.line.me/" + cfg.liffId, BLUE));
     return {
       type: "bubble", size: "mega",
-      hero: { type: "image", url: cfg.base + "img/hero.jpg", size: "full", aspectRatio: "4:5", aspectMode: "cover",
+      hero: { type: "image", url: cfg.base + "img/hero.jpg" + V, size: "full", aspectRatio: "4:5", aspectMode: "cover",
         action: { type: "uri", label: "名片", uri: cfg.base } },
       body: { type: "box", layout: "vertical", spacing: "sm", backgroundColor: NAVY, contents: [
         txt("邱一晉 Joey", { weight: "bold", size: "xl", color: "#FFFFFF" }),
@@ -43,7 +44,7 @@
   function serviceBubble(s, cfg) {
     return {
       type: "bubble", size: "mega",
-      hero: { type: "image", url: cfg.base + "img/" + s.img, size: "full", aspectRatio: "1:1", aspectMode: "cover" },
+      hero: { type: "image", url: cfg.base + "img/" + s.img + V, size: "full", aspectRatio: "1:1", aspectMode: "cover" },
       body: { type: "box", layout: "vertical", spacing: "sm", backgroundColor: NAVY, contents: [
         txt(s.title, { weight: "bold", size: "xl", color: "#FFFFFF" }),
         txt(s.model, { size: "sm", color: CYAN }),
@@ -69,7 +70,7 @@
   function courseBubble(cfg) {
     return {
       type: "bubble", size: "mega",
-      hero: { type: "image", url: cfg.base + "img/course.jpg", size: "full", aspectRatio: "2:3", aspectMode: "cover",
+      hero: { type: "image", url: cfg.base + "img/course.jpg" + V, size: "full", aspectRatio: "2:3", aspectMode: "cover",
         action: { type: "uri", label: "報名", uri: COURSE_FORM } },
       body: { type: "box", layout: "vertical", spacing: "sm", backgroundColor: NAVY, contents: [
         txt("AI 課程招生", { size: "sm", color: CYAN, weight: "bold" }),
@@ -89,7 +90,7 @@
   function coachBubble(cfg) {
     return {
       type: "bubble", size: "mega",
-      hero: { type: "image", url: cfg.base + "img/coach.jpg", size: "full", aspectRatio: "1:1", aspectMode: "cover" },
+      hero: { type: "image", url: cfg.base + "img/coach.jpg" + V, size: "full", aspectRatio: "1:1", aspectMode: "cover" },
       body: { type: "box", layout: "vertical", spacing: "sm", backgroundColor: NAVY, contents: [
         txt("AI 陪跑", { size: "sm", color: CYAN, weight: "bold" }),
         txt("一對一諮詢", { weight: "bold", size: "xl", color: "#FFFFFF" }),

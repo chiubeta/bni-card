@@ -6,7 +6,7 @@
    "size": "mega",
    "hero": {
     "type": "image",
-    "url": "https://chiubeta.github.io/bni-card/img/hero.jpg",
+    "url": "https://chiubeta.github.io/bni-card/img/hero.jpg?v=3",
     "size": "full",
     "aspectRatio": "4:5",
     "aspectMode": "cover",
@@ -103,7 +103,7 @@
    "size": "mega",
    "hero": {
     "type": "image",
-    "url": "https://chiubeta.github.io/bni-card/img/course.jpg",
+    "url": "https://chiubeta.github.io/bni-card/img/course.jpg?v=3",
     "size": "full",
     "aspectRatio": "2:3",
     "aspectMode": "cover",
@@ -238,7 +238,7 @@
    "size": "mega",
    "hero": {
     "type": "image",
-    "url": "https://chiubeta.github.io/bni-card/img/coach.jpg",
+    "url": "https://chiubeta.github.io/bni-card/img/coach.jpg?v=3",
     "size": "full",
     "aspectRatio": "1:1",
     "aspectMode": "cover"
@@ -320,7 +320,7 @@
    "size": "mega",
    "hero": {
     "type": "image",
-    "url": "https://chiubeta.github.io/bni-card/img/s1.jpg",
+    "url": "https://chiubeta.github.io/bni-card/img/s1.jpg?v=3",
     "size": "full",
     "aspectRatio": "1:1",
     "aspectMode": "cover"
@@ -401,7 +401,7 @@
    "size": "mega",
    "hero": {
     "type": "image",
-    "url": "https://chiubeta.github.io/bni-card/img/s6.jpg",
+    "url": "https://chiubeta.github.io/bni-card/img/s6.jpg?v=3",
     "size": "full",
     "aspectRatio": "1:1",
     "aspectMode": "cover"
@@ -482,7 +482,7 @@
    "size": "mega",
    "hero": {
     "type": "image",
-    "url": "https://chiubeta.github.io/bni-card/img/s2.jpg",
+    "url": "https://chiubeta.github.io/bni-card/img/s2.jpg?v=3",
     "size": "full",
     "aspectRatio": "1:1",
     "aspectMode": "cover"
@@ -563,7 +563,7 @@
    "size": "mega",
    "hero": {
     "type": "image",
-    "url": "https://chiubeta.github.io/bni-card/img/s3.jpg",
+    "url": "https://chiubeta.github.io/bni-card/img/s3.jpg?v=3",
     "size": "full",
     "aspectRatio": "1:1",
     "aspectMode": "cover"

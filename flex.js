@@ -1,4 +1,4 @@
-// Flex Message 輪播：第 1 張名片（去背照片）＋4 張服務卡。瀏覽器與 node 共用（node 用來輸出 flex.json 給 Flex Simulator）
+// Flex Message 輪播：名片 → 課程招生 → 陪跑諮詢 → 4 張服務卡。瀏覽器與 node 共用（node 用來輸出 flex.json 給 Flex Simulator）
 (function (root) {
   const NAVY = "#0B1730";
   const CYAN = "#4FD8FF";
@@ -56,11 +56,57 @@
     };
   }
 
+  const COURSE_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSeKzUN3lAfPUH5pFcaCfzYgez0CRfYhbKvoDqLdlZgkxyZh2w/viewform?usp=publish-editor";
+
+  // 標籤＋值一列（課程卡的時間／地點／費用）
+  const infoRow = (label, value) => ({
+    type: "box", layout: "baseline", spacing: "md", contents: [
+      txt(label, { size: "sm", color: CYAN, flex: 2 }),
+      txt(value, { size: "sm", color: "#FFFFFF", flex: 7 }),
+    ],
+  });
+
+  function courseBubble(cfg) {
+    return {
+      type: "bubble", size: "mega",
+      hero: { type: "image", url: cfg.base + "img/course.jpg", size: "full", aspectRatio: "2:3", aspectMode: "cover",
+        action: { type: "uri", label: "報名", uri: COURSE_FORM } },
+      body: { type: "box", layout: "vertical", spacing: "sm", backgroundColor: NAVY, contents: [
+        txt("AI 課程招生", { size: "sm", color: CYAN, weight: "bold" }),
+        txt("AI 小白的第一堂實戰課", { weight: "bold", size: "xl", color: "#FFFFFF" }),
+        { type: "box", layout: "vertical", spacing: "xs", margin: "md", contents: [
+          infoRow("時間", "11/7（六）14:00–16:00"),
+          infoRow("地點", "中和區連城路469巷37號（啵啵哈哈鬆餅專賣）"),
+          infoRow("費用", "600 元（含場地費、小點心）"),
+        ] },
+      ] },
+      footer: { type: "box", layout: "vertical", backgroundColor: NAVY, contents: [
+        btn("立即報名", COURSE_FORM, LINE_GREEN),
+      ] },
+    };
+  }
+
+  function coachBubble(cfg) {
+    return {
+      type: "bubble", size: "mega",
+      hero: { type: "image", url: cfg.base + "img/coach.jpg", size: "full", aspectRatio: "1:1", aspectMode: "cover" },
+      body: { type: "box", layout: "vertical", spacing: "sm", backgroundColor: NAVY, contents: [
+        txt("AI 陪跑", { size: "sm", color: CYAN, weight: "bold" }),
+        txt("一對一諮詢", { weight: "bold", size: "xl", color: "#FFFFFF" }),
+        txt("可以幫你做", { size: "sm", color: MUTED, margin: "md" }),
+        ...["依你的工作挑對 AI 工具", "陪你把流程實際做出來", "卡關隨時問，不用自己摸索"].map((p) => txt("☆" + p, { size: "md", color: "#FFFFFF" })),
+      ] },
+      footer: { type: "box", layout: "vertical", backgroundColor: NAVY, contents: [
+        btn("預約諮詢", cfg.lineAdd, LINE_GREEN),
+      ] },
+    };
+  }
+
   function buildFlex(cfg) {
     return {
       type: "flex",
       altText: "邱一晉 Joey｜AI 系統工程｜用 AI 幫中小企業省人力",
-      contents: { type: "carousel", contents: [cardBubble(cfg), ...SERVICES.map((s) => serviceBubble(s, cfg))] },
+      contents: { type: "carousel", contents: [cardBubble(cfg), courseBubble(cfg), coachBubble(cfg), ...SERVICES.map((s) => serviceBubble(s, cfg))] },
     };
   }
 

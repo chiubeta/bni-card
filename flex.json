@@ -103,6 +103,223 @@
    "size": "mega",
    "hero": {
     "type": "image",
+    "url": "https://chiubeta.github.io/bni-card/img/course.jpg",
+    "size": "full",
+    "aspectRatio": "2:3",
+    "aspectMode": "cover",
+    "action": {
+     "type": "uri",
+     "label": "報名",
+     "uri": "https://docs.google.com/forms/d/e/1FAIpQLSeKzUN3lAfPUH5pFcaCfzYgez0CRfYhbKvoDqLdlZgkxyZh2w/viewform?usp=publish-editor"
+    }
+   },
+   "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "sm",
+    "backgroundColor": "#0B1730",
+    "contents": [
+     {
+      "type": "text",
+      "text": "AI 課程招生",
+      "wrap": true,
+      "size": "sm",
+      "color": "#4FD8FF",
+      "weight": "bold"
+     },
+     {
+      "type": "text",
+      "text": "AI 小白的第一堂實戰課",
+      "wrap": true,
+      "weight": "bold",
+      "size": "xl",
+      "color": "#FFFFFF"
+     },
+     {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "xs",
+      "margin": "md",
+      "contents": [
+       {
+        "type": "box",
+        "layout": "baseline",
+        "spacing": "md",
+        "contents": [
+         {
+          "type": "text",
+          "text": "時間",
+          "wrap": true,
+          "size": "sm",
+          "color": "#4FD8FF",
+          "flex": 2
+         },
+         {
+          "type": "text",
+          "text": "11/7（六）14:00–16:00",
+          "wrap": true,
+          "size": "sm",
+          "color": "#FFFFFF",
+          "flex": 7
+         }
+        ]
+       },
+       {
+        "type": "box",
+        "layout": "baseline",
+        "spacing": "md",
+        "contents": [
+         {
+          "type": "text",
+          "text": "地點",
+          "wrap": true,
+          "size": "sm",
+          "color": "#4FD8FF",
+          "flex": 2
+         },
+         {
+          "type": "text",
+          "text": "中和區連城路469巷37號（啵啵哈哈鬆餅專賣）",
+          "wrap": true,
+          "size": "sm",
+          "color": "#FFFFFF",
+          "flex": 7
+         }
+        ]
+       },
+       {
+        "type": "box",
+        "layout": "baseline",
+        "spacing": "md",
+        "contents": [
+         {
+          "type": "text",
+          "text": "費用",
+          "wrap": true,
+          "size": "sm",
+          "color": "#4FD8FF",
+          "flex": 2
+         },
+         {
+          "type": "text",
+          "text": "600 元（含場地費、小點心）",
+          "wrap": true,
+          "size": "sm",
+          "color": "#FFFFFF",
+          "flex": 7
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "backgroundColor": "#0B1730",
+    "contents": [
+     {
+      "type": "button",
+      "style": "primary",
+      "height": "sm",
+      "color": "#06C755",
+      "action": {
+       "type": "uri",
+       "label": "立即報名",
+       "uri": "https://docs.google.com/forms/d/e/1FAIpQLSeKzUN3lAfPUH5pFcaCfzYgez0CRfYhbKvoDqLdlZgkxyZh2w/viewform?usp=publish-editor"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "type": "bubble",
+   "size": "mega",
+   "hero": {
+    "type": "image",
+    "url": "https://chiubeta.github.io/bni-card/img/coach.jpg",
+    "size": "full",
+    "aspectRatio": "1:1",
+    "aspectMode": "cover"
+   },
+   "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "sm",
+    "backgroundColor": "#0B1730",
+    "contents": [
+     {
+      "type": "text",
+      "text": "AI 陪跑",
+      "wrap": true,
+      "size": "sm",
+      "color": "#4FD8FF",
+      "weight": "bold"
+     },
+     {
+      "type": "text",
+      "text": "一對一諮詢",
+      "wrap": true,
+      "weight": "bold",
+      "size": "xl",
+      "color": "#FFFFFF"
+     },
+     {
+      "type": "text",
+      "text": "可以幫你做",
+      "wrap": true,
+      "size": "sm",
+      "color": "#9DB3D3",
+      "margin": "md"
+     },
+     {
+      "type": "text",
+      "text": "☆依你的工作挑對 AI 工具",
+      "wrap": true,
+      "size": "md",
+      "color": "#FFFFFF"
+     },
+     {
+      "type": "text",
+      "text": "☆陪你把流程實際做出來",
+      "wrap": true,
+      "size": "md",
+      "color": "#FFFFFF"
+     },
+     {
+      "type": "text",
+      "text": "☆卡關隨時問，不用自己摸索",
+      "wrap": true,
+      "size": "md",
+      "color": "#FFFFFF"
+     }
+    ]
+   },
+   "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "backgroundColor": "#0B1730",
+    "contents": [
+     {
+      "type": "button",
+      "style": "primary",
+      "height": "sm",
+      "color": "#06C755",
+      "action": {
+       "type": "uri",
+       "label": "預約諮詢",
+       "uri": "https://line.me/ti/p/~beta0805"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "type": "bubble",
+   "size": "mega",
+   "hero": {
+    "type": "image",
     "url": "https://chiubeta.github.io/bni-card/img/s1.jpg",
     "size": "full",
     "aspectRatio": "1:1",

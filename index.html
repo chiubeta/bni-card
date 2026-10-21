@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="邱一晉 Joey｜AI 系統工程">
+<meta property="og:description" content="用 AI 幫中小企業省人力">
+<meta property="og:image" content="https://chiubeta.github.io/bni-card/img/card.jpg">
+<style>[hidden]{display:none!important}</style>
+<title>邱一晉 Joey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* 單一深色科技視覺（刻意不做淺色版）：名片圖為主角，下方一顆主按鈕、一列次要資訊 */
+:root {
+  --bg: #050b1a;
+  --panel: rgba(120, 190, 255, 0.07);
+  --edge: rgba(130, 205, 255, 0.35);
+  --fg: #e8f2ff;
+  --muted: #8ea6c6;
+  --cyan: #4fd8ff;
+  --line: #06c755;
+  --line-hi: #22e070;
+  --f-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100%;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(40, 110, 255, 0.22), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(140, 80, 255, 0.16), transparent 70%),
+    var(--bg);
+  color: var(--fg);
+  font-family: var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 480px;
+  margin: 0 auto;
+  padding-block: 20px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.hint-top {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--cyan);
+  text-align: center;
+  opacity: 0.85;
+}
+.card {
+  display: block;
+  padding: 0;
+  border: 1px solid var(--edge);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--panel);
+  box-shadow: 0 0 0 1px rgba(79, 216, 255, 0.08), 0 18px 50px rgba(0, 40, 120, 0.45);
+  cursor: zoom-in;
+  width: 100%;
+}
+.card img { display: block; width: 100%; height: auto; }
+.card:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+.add-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 60px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--line-hi), var(--line));
+  color: #fff;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  box-shadow: 0 0 24px rgba(6, 199, 85, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  position: sticky;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  z-index: 5;
+}
+.add-line:active { transform: translateY(1px); }
+.add-line:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.add-line svg { width: 30px; height: 30px; flex: none; }
+
+.info {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--edge);
+  border-radius: 14px;
+  background: var(--panel);
+  backdrop-filter: blur(8px);
+}
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.label { font-size: 12px; letter-spacing: 0.12em; color: var(--muted); }
+.val { font-family: var(--f-mono); font-size: 16px; color: var(--fg); user-select: all; min-width: 0; overflow-wrap: anywhere; }
+.copy {
+  font: 500 13px var(--f-body);
+  color: var(--cyan);
+  background: transparent;
+  border: 1px solid var(--edge);
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+  flex: none;
+}
+.copy:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.share-link { text-align: center; color: var(--cyan); font-size: 15px; text-decoration: none; padding: 8px; }
+.save-tip { font-size: 13px; color: var(--muted); text-align: center; line-height: 1.6; margin: 0; }
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(2, 6, 16, 0.94);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+.lightbox[hidden] { display: none; }
+.lightbox img { max-height: calc(100% - 50px); max-width: 100%; width: auto; border-radius: 12px; }
+.lightbox p { margin: 0; font-size: 13px; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) {
+  .add-line { animation: glow 2.6s ease-in-out infinite; }
+  @keyframes glow { 50% { box-shadow: 0 0 36px rgba(6, 199, 85, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.35); } }
+}
+</style>
+</head>
+<body>
+
+
+<main class="wrap">
+  <div class="hint-top">BNI · DIGITAL CARD</div>
+
+  <button class="card" id="card-btn" type="button" aria-label="放大名片">
+    <img src="img/card.jpg" width="1024" height="1536" alt="邱一晉 Joey，AI 系統工程。用 AI 幫中小企業省人力：寫程式碼與系統開發、生成圖片、生成影片、生成音樂、生成 3D 模型、個人助理。">
+  </button>
+
+  <a class="add-line" href="https://line.me/ti/p/~beta0805" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 2.5C6.48 2.5 2 6.13 2 10.6c0 4 3.55 7.36 8.35 8 .33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.25-.2.98.86.53 1.06-.45 5.73-3.37 7.82-5.78C21.24 14.05 22 12.4 22 10.6 22 6.13 17.52 2.5 12 2.5Zm-3.9 10.74H6.11a.53.53 0 0 1-.53-.52V8.73a.53.53 0 0 1 1.06 0v3.46H8.1a.53.53 0 0 1 0 1.05Zm2.06-.52a.53.53 0 0 1-1.06 0V8.73a.53.53 0 0 1 1.06 0v3.99Zm4.8 0a.53.53 0 0 1-.95.32l-2.04-2.78v2.46a.53.53 0 0 1-1.06 0V8.73a.53.53 0 0 1 .95-.32l2.04 2.78V8.73a.53.53 0 0 1 1.06 0v3.99Zm3.22-2.52a.53.53 0 0 1 0 1.05h-1.46v.94h1.46a.53.53 0 0 1 0 1.05h-1.99a.53.53 0 0 1-.52-.52V8.73c0-.29.23-.53.52-.53h1.99a.53.53 0 0 1 0 1.06h-1.46v.94h1.46Z"/></svg>
+    加我 LINE 好友
+  </a>
+
+  <section class="info" aria-label="聯絡資訊">
+    <div class="row">
+      <span class="label">LINE ID</span>
+      <span class="val" id="line-id">beta0805</span>
+      <button class="copy" id="copy-btn" type="button">複製</button>
+    </div>
+  </section>
+
+  <a class="share-link" id="share-link" href="#" hidden>把這張名片分享給 LINE 好友 →</a>
+
+  <p class="save-tip">點名片可放大；手機長按圖片即可存到相簿</p>
+</main>
+
+<div class="lightbox" id="lightbox" hidden>
+  <img src="img/card.jpg" alt="邱一晉 Joey 名片大圖">
+  <p>長按圖片存到相簿 · 點空白處關閉</p>
+</div>
+
+<script src="config.js"></script>
+<script>
+if (window.BNI_CONFIG.liffId) { const s = document.getElementById('share-link'); s.href = 'https://liff.line.me/' + BNI_CONFIG.liffId; s.hidden = false; }
+const lb = document.getElementById('lightbox');
+document.getElementById('card-btn').addEventListener('click', () => { lb.hidden = false; });
+lb.addEventListener('click', (e) => { if (e.target !== lb.querySelector('img')) lb.hidden = true; });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') lb.hidden = true; });
+
+const btn = document.getElementById('copy-btn');
+btn.addEventListener('click', () => {
+  const done = () => { btn.textContent = '已複製'; setTimeout(() => { btn.textContent = '複製'; }, 1600); };
+  const fallback = () => {
+    const r = document.createRange(); r.selectNodeContents(document.getElementById('line-id'));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    btn.textContent = '已選取';
+  };
+  try { navigator.clipboard.writeText('beta0805').then(done, fallback); } catch (_) { fallback(); }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>送出名片｜邱一晉 Joey</title>
+<style>
+  :root { --bg: #050b1a; --fg: #e8f2ff; --muted: #8ea6c6; --edge: rgba(130,205,255,.35); --line: #06c755; color-scheme: dark; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif; }
+  main { max-width: 440px; margin: 0 auto; padding: 28px max(16px, env(safe-area-inset-right)) 40px max(16px, env(safe-area-inset-left)); display: flex; flex-direction: column; gap: 16px; text-align: center; }
+  img { width: 62%; margin: 0 auto; border-radius: 12px; border: 1px solid var(--edge); }
+  h1 { font-size: 20px; margin: 0; }
+  p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+  button { min-height: 56px; border: 0; border-radius: 14px; background: var(--line); color: #fff; font-size: 18px; font-weight: 800; letter-spacing: .05em; cursor: pointer; }
+  button:disabled { opacity: .5; }
+  #status { min-height: 1.6em; color: #4fd8ff; }
+</style>
+</head>
+<body>
+<main>
+  <img src="img/card.jpg" alt="邱一晉 Joey 名片">
+  <h1>把名片傳給 LINE 好友</h1>
+  <p>按下面按鈕，選好友或群組，就會收到可以左右滑的名片卡。</p>
+  <button id="send" type="button" disabled>選擇好友送出名片</button>
+  <p id="status">載入中…</p>
+</main>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script src="config.js"></script>
+<script src="flex.js"></script>
+<script>
+const cfg = window.BNI_CONFIG;
+const status = document.getElementById('status');
+const send = document.getElementById('send');
+
+async function share() {
+  send.disabled = true;
+  try {
+    const res = await liff.shareTargetPicker([buildFlex(cfg)]);
+    status.textContent = res ? '已送出 ✅' : '已取消';
+  } catch (e) {
+    status.textContent = '送出失敗：' + (e.message || e);
+  }
+  send.disabled = false;
+}
+
+(async () => {
+  if (!cfg.liffId) { status.textContent = '尚未設定 LIFF ID（config.js）'; return; }
+  try {
+    await liff.init({ liffId: cfg.liffId });
+    if (!liff.isLoggedIn()) { liff.login({ redirectUri: location.href }); return; }
+    if (!liff.isApiAvailable('shareTargetPicker')) {
+      status.textContent = '這個環境不能分享，請在 LINE 裡打開這個連結，並確認 LIFF 已開啟 shareTargetPicker';
+      return;
+    }
+    send.disabled = false;
+    status.textContent = '';
+    send.addEventListener('click', share);
+  } catch (e) {
+    status.textContent = '初始化失敗：' + (e.message || e);
+  }
+})();
+</script>
+</body>
+</html>

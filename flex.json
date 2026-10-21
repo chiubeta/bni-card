@@ -83,6 +83,17 @@
        "label": "電子名片",
        "uri": "https://chiubeta.github.io/bni-card/"
       }
+     },
+     {
+      "type": "button",
+      "style": "primary",
+      "height": "sm",
+      "color": "#1E6FFF",
+      "action": {
+       "type": "uri",
+       "label": "分享給好友",
+       "uri": "https://liff.line.me/2012143040-9nn6sf0z"
+      }
      }
     ]
    }

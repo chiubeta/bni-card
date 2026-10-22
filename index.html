@@ -3,193 +3,536 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>邱一晉 Joey｜AI 系統工程・作品集</title>
+<meta name="description" content="用 AI 幫中小企業省人力。LINE 智慧助理、團隊內部平台、自動化報表、AI 圖片與短影音——從需求到上線一手包辦。">
 <meta property="og:title" content="邱一晉 Joey｜AI 系統工程">
-<meta property="og:description" content="用 AI 幫中小企業省人力">
+<meta property="og:description" content="用 AI 幫中小企業省人力：LINE 智慧助理、團隊平台、自動化、AI 影音。看看我做過的作品。">
 <meta property="og:image" content="https://chiubeta.github.io/bni-card/img/card.jpg">
-<style>[hidden]{display:none!important}</style>
-<title>邱一晉 Joey</title>
+<meta name="theme-color" content="#050b1a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* 單一深色科技視覺（刻意不做淺色版）：名片圖為主角，下方一顆主按鈕、一列次要資訊 */
+/* 沿用名片的深色科技視覺（刻意不做淺色版）。輕量：無 WebGL、無動畫函式庫 */
 :root {
   --bg: #050b1a;
-  --panel: rgba(120, 190, 255, 0.07);
-  --edge: rgba(130, 205, 255, 0.35);
+  --bg2: #0a1530;
+  --panel: rgba(120, 190, 255, 0.06);
+  --panel-hi: rgba(120, 190, 255, 0.11);
+  --edge: rgba(130, 205, 255, 0.22);
+  --edge-hi: rgba(130, 205, 255, 0.45);
   --fg: #e8f2ff;
-  --muted: #8ea6c6;
+  --muted: #93a9c8;
   --cyan: #4fd8ff;
+  --violet: #a98bff;
+  --amber: #ffc94d;
   --line: #06c755;
   --line-hi: #22e070;
   --f-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
   --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r: 18px;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0;
-  min-height: 100%;
   background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(40, 110, 255, 0.22), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(140, 80, 255, 0.16), transparent 70%),
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(40, 110, 255, 0.24), transparent 70%),
+    radial-gradient(ellipse 50% 30% at 100% 40%, rgba(140, 80, 255, 0.10), transparent 70%),
     var(--bg);
   color: var(--fg);
   font-family: var(--f-body);
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
 .wrap {
-  max-width: 480px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding-block: 20px 40px;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
 }
-.hint-top {
-  font-family: var(--f-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: var(--cyan);
-  text-align: center;
-  opacity: 0.85;
-}
-.card {
-  display: block;
-  padding: 0;
-  border: 1px solid var(--edge);
-  border-radius: 18px;
-  overflow: hidden;
-  background: var(--panel);
-  box-shadow: 0 0 0 1px rgba(79, 216, 255, 0.08), 0 18px 50px rgba(0, 40, 120, 0.45);
-  cursor: zoom-in;
-  width: 100%;
-}
-.card img { display: block; width: 100%; height: auto; }
-.card:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 
-.add-line {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  min-height: 60px;
-  border-radius: 16px;
-  background: linear-gradient(180deg, var(--line-hi), var(--line));
-  color: #fff;
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  text-decoration: none;
-  box-shadow: 0 0 24px rgba(6, 199, 85, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  position: sticky;
-  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-  z-index: 5;
+/* ── 頂部導覽 ── */
+.nav {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(5, 11, 26, 0.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(130, 205, 255, 0.10);
 }
-.add-line:active { transform: translateY(1px); }
-.add-line:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
-.add-line svg { width: 30px; height: 30px; flex: none; }
+.nav .wrap { display: flex; align-items: center; gap: 16px; height: 56px; }
+.brand { font-weight: 900; letter-spacing: 0.04em; text-decoration: none; white-space: nowrap; }
+.brand small { font: 500 11px var(--f-mono); color: var(--cyan); letter-spacing: 0.14em; margin-left: 8px; }
+.nav ul { display: flex; gap: 4px; list-style: none; margin: 0 0 0 auto; padding: 0; }
+.nav ul a { display: block; padding: 6px 12px; border-radius: 999px; font-size: 14px; color: var(--muted); text-decoration: none; }
+.nav ul a:hover { color: var(--fg); background: var(--panel-hi); }
+.nav .nav-cta { font-size: 14px; font-weight: 700; padding: 7px 14px; border-radius: 999px; background: var(--line); color: #fff; text-decoration: none; white-space: nowrap; }
+@media (max-width: 760px) { .nav ul { display: none; } .nav .nav-cta { margin-left: auto; } }
 
-.info {
-  display: grid;
-  gap: 10px;
-  padding: 14px 16px;
-  border: 1px solid var(--edge);
-  border-radius: 14px;
-  background: var(--panel);
-  backdrop-filter: blur(8px);
-}
-.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.label { font-size: 12px; letter-spacing: 0.12em; color: var(--muted); }
-.val { font-family: var(--f-mono); font-size: 16px; color: var(--fg); user-select: all; min-width: 0; overflow-wrap: anywhere; }
-.copy {
-  font: 500 13px var(--f-body);
-  color: var(--cyan);
-  background: transparent;
-  border: 1px solid var(--edge);
-  border-radius: 999px;
-  padding: 6px 14px;
-  cursor: pointer;
-  flex: none;
-}
-.copy:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
-.share-link { text-align: center; color: var(--cyan); font-size: 15px; text-decoration: none; padding: 8px; }
-.save-tip { font-size: 13px; color: var(--muted); text-align: center; line-height: 1.6; margin: 0; }
+/* ── 共用 ── */
+section { padding: 72px 0; }
+.eyebrow { font: 500 12px var(--f-mono); letter-spacing: 0.2em; color: var(--cyan); text-transform: uppercase; margin: 0 0 10px; }
+h2 { font-size: clamp(26px, 4.4vw, 38px); line-height: 1.3; margin: 0 0 12px; font-weight: 900; letter-spacing: 0.01em; }
+.lead { color: var(--muted); font-size: 16px; max-width: 640px; margin: 0 0 36px; }
+.panel { background: var(--panel); border: 1px solid var(--edge); border-radius: var(--r); }
+.tag { display: inline-block; font-size: 12px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--edge); color: var(--muted); white-space: nowrap; }
+.tag.live { border-color: rgba(6, 199, 85, 0.6); color: var(--line-hi); }
+.tag.live::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--line-hi); margin-right: 6px; vertical-align: 2px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 14px; font-weight: 700; font-size: 16px; text-decoration: none; letter-spacing: 0.04em; }
+.btn-line { background: linear-gradient(180deg, var(--line-hi), var(--line)); color: #fff; box-shadow: 0 0 24px rgba(6, 199, 85, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+.btn-ghost { border: 1px solid var(--edge-hi); color: var(--fg); }
+.btn-ghost:hover { background: var(--panel-hi); }
+.btn svg { width: 24px; height: 24px; flex: none; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 
-.lightbox {
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  background: rgba(2, 6, 16, 0.94);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+/* ── Hero ── */
+.hero { padding: 48px 0 56px; }
+.hero .wrap { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; }
+.hero h1 { font-size: clamp(36px, 7vw, 64px); line-height: 1.15; margin: 0 0 18px; font-weight: 900; }
+.hero h1 .hl { background: linear-gradient(90deg, var(--cyan), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.who { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 12px; margin-bottom: 18px; }
+.who b { font-size: 20px; }
+.who span { font: 500 13px var(--f-mono); letter-spacing: 0.14em; color: var(--cyan); }
+.hero p.sub { font-size: 18px; color: #c9d8ee; margin: 0 0 28px; max-width: 560px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.proof { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 28px; padding: 0; list-style: none; font-size: 14px; color: var(--muted); }
+.proof li::before { content: "✓"; color: var(--line-hi); font-weight: 900; margin-right: 6px; }
+.portrait { position: relative; border-radius: 24px; overflow: hidden; border: 1px solid var(--edge-hi); box-shadow: 0 24px 60px rgba(0, 40, 120, 0.5); }
+.portrait figcaption { position: absolute; left: 12px; bottom: 12px; right: 12px; padding: 10px 14px; border-radius: 12px; background: rgba(5, 11, 26, 0.78); backdrop-filter: blur(6px); font-size: 14px; }
+.portrait figcaption b { color: var(--cyan); }
+@media (max-width: 820px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 32px; }
+  .portrait { max-width: 360px; }
 }
-.lightbox[hidden] { display: none; }
-.lightbox img { max-height: calc(100% - 50px); max-width: 100%; width: auto; border-radius: 12px; }
-.lightbox p { margin: 0; font-size: 13px; color: var(--muted); }
+
+/* ── 痛點 ── */
+.pains { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.pain { padding: 22px 20px; }
+.pain .q { font-weight: 700; font-size: 16px; margin: 0 0 12px; }
+.pain .q::before { content: "「"; color: var(--muted); }
+.pain .q::after { content: "」"; color: var(--muted); }
+.pain .a { margin: 0; font-size: 14px; color: var(--muted); }
+.pain .a b { display: block; color: var(--cyan); font-size: 15px; margin-bottom: 4px; }
+@media (max-width: 900px) { .pains { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .pains { grid-template-columns: 1fr; } }
+
+/* ── 精選案例 ── */
+.case { padding: 32px; margin-bottom: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+.case-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; }
+.case h3 { font-size: clamp(22px, 3.4vw, 28px); margin: 0 0 6px; line-height: 1.35; }
+.case .pitch { font-size: 17px; color: #c9d8ee; margin: 0 0 22px; }
+.case dl { margin: 0 0 20px; display: grid; gap: 14px; }
+.case dt { font: 500 12px var(--f-mono); letter-spacing: 0.16em; color: var(--cyan); }
+.case dd { margin: 2px 0 0; font-size: 15px; color: var(--fg); }
+.case ul.feat { margin: 4px 0 0; padding-left: 0; list-style: none; display: grid; gap: 6px; }
+.case ul.feat li { padding-left: 18px; position: relative; font-size: 15px; }
+.case ul.feat li::before { content: ""; position: absolute; left: 2px; top: 0.72em; width: 6px; height: 6px; border-radius: 2px; background: var(--cyan); }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 0 20px; }
+.stat { padding: 12px; border-radius: 12px; background: rgba(79, 216, 255, 0.06); border: 1px solid rgba(79, 216, 255, 0.18); }
+.stat b { display: block; font-size: 22px; font-weight: 900; color: var(--cyan); line-height: 1.2; }
+.stat span { font-size: 12px; color: var(--muted); line-height: 1.4; display: block; margin-top: 2px; }
+.stack { display: flex; flex-wrap: wrap; gap: 6px; }
+.fit { margin-top: 18px; font-size: 14px; color: var(--muted); padding: 12px 14px; border-left: 3px solid var(--amber); background: rgba(255, 201, 77, 0.06); border-radius: 0 10px 10px 0; }
+.fit b { color: var(--amber); }
+.case-media { display: grid; gap: 12px; align-content: start; }
+.case-media img { border-radius: 14px; border: 1px solid var(--edge); }
+.shots { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; scrollbar-width: thin; }
+.shots img { flex: 0 0 46%; scroll-snap-align: start; border-radius: 12px; border: 1px solid var(--edge); }
+.media-note { font-size: 12px; color: var(--muted); margin: 0; }
+@media (max-width: 860px) {
+  .case { grid-template-columns: 1fr; padding: 22px 18px; gap: 24px; }
+  .case-media { order: -1; }
+  .case-media .desk-only { display: none; }
+  .shots img { flex-basis: 62%; }
+}
+
+/* ── 更多作品 ── */
+.works { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.work { padding: 22px 20px; display: flex; flex-direction: column; gap: 10px; }
+.work .ico { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 22px; background: rgba(79, 216, 255, 0.1); border: 1px solid rgba(79, 216, 255, 0.25); }
+.work h3 { font-size: 18px; margin: 0; }
+.work p { margin: 0; font-size: 14px; color: var(--muted); flex: 1; }
+.work .val { font-size: 14px; color: var(--fg); }
+.work .val::before { content: "→ "; color: var(--line-hi); font-weight: 700; }
+.work.wide { grid-column: span 2; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; }
+.work.wide .txt { display: flex; flex-direction: column; gap: 10px; }
+.vids { display: flex; gap: 8px; }
+.vids img { width: 104px; border-radius: 10px; border: 1px solid var(--edge); }
+@media (max-width: 900px) { .works { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) {
+  .works { grid-template-columns: 1fr; }
+  .work.wide { grid-column: auto; grid-template-columns: 1fr; }
+  .vids img { width: calc((100% - 16px) / 3); }
+}
+
+/* ── 服務 ── */
+.services { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.svc { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+.svc img { aspect-ratio: 1; object-fit: cover; width: 100%; }
+.svc .body { padding: 16px 18px 20px; }
+.svc h3 { margin: 0 0 8px; font-size: 18px; }
+.svc ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--muted); }
+@media (max-width: 900px) { .services { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .services { grid-template-columns: 1fr; } .svc { flex-direction: row; } .svc img { width: 108px; flex: none; } }
+
+/* ── 流程 ── */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; counter-reset: s; list-style: none; padding: 0; margin: 0; }
+.steps li { padding: 22px 20px; counter-increment: s; }
+.steps li::before { content: "0" counter(s); font: 500 13px var(--f-mono); color: var(--cyan); letter-spacing: 0.14em; display: block; margin-bottom: 8px; }
+.steps b { display: block; font-size: 17px; margin-bottom: 6px; }
+.steps p { margin: 0; font-size: 14px; color: var(--muted); }
+.promise { margin-top: 18px; padding: 16px 20px; font-size: 15px; }
+.promise b { color: var(--amber); }
+@media (max-width: 900px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+
+/* ── 課程 ── */
+.course { display: grid; grid-template-columns: 260px 1fr; gap: 32px; padding: 28px; align-items: center; }
+.course img { border-radius: 14px; border: 1px solid var(--edge); }
+.course h3 { font-size: 24px; margin: 6px 0 10px; }
+.outcomes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+.outcomes li { font-size: 14px; padding: 10px 12px; border-radius: 10px; background: var(--panel-hi); }
+.outcomes li b { color: var(--amber); margin-right: 6px; }
+.info-rows { display: grid; gap: 4px; font-size: 14px; margin-bottom: 18px; color: var(--muted); }
+.info-rows b { color: var(--cyan); font-weight: 500; margin-right: 10px; }
+@media (max-width: 760px) { .course { grid-template-columns: 1fr; padding: 20px 18px; } .course img { max-width: 220px; } .outcomes { grid-template-columns: 1fr; } }
+
+/* ── 聯絡 ── */
+.contact { text-align: center; padding: 48px 24px; background: linear-gradient(160deg, rgba(40, 110, 255, 0.18), rgba(140, 80, 255, 0.12)); }
+.contact h2 { margin-bottom: 10px; }
+.contact p { color: #c9d8ee; margin: 0 auto 26px; max-width: 520px; }
+.contact .cta-row { justify-content: center; }
+.idrow { margin-top: 20px; display: inline-flex; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); }
+.idrow code { font: 500 16px var(--f-mono); color: var(--fg); user-select: all; }
+.copy { font: 500 13px var(--f-body); color: var(--cyan); background: transparent; border: 1px solid var(--edge-hi); border-radius: 999px; padding: 5px 14px; cursor: pointer; }
+footer { padding: 32px 0 110px; text-align: center; font-size: 13px; color: var(--muted); }
+footer a { color: var(--cyan); text-decoration: none; margin: 0 8px; }
+
+/* 手機底部常駐 LINE 按鈕 */
+.dock { display: none; }
+@media (max-width: 760px) {
+  .dock {
+    display: flex; position: fixed; z-index: 9;
+    left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px));
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    min-height: 54px; font-size: 17px;
+  }
+}
+
+/* 進場淡入（只在支援且未要求減少動態時） */
 @media (prefers-reduced-motion: no-preference) {
-  .add-line { animation: glow 2.6s ease-in-out infinite; }
-  @keyframes glow { 50% { box-shadow: 0 0 36px rgba(6, 199, 85, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.35); } }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
 }
 </style>
 </head>
 <body>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-line" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5C6.48 2.5 2 6.13 2 10.6c0 4 3.55 7.36 8.35 8 .33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.25-.2.98.86.53 1.06-.45 5.73-3.37 7.82-5.78C21.24 14.05 22 12.4 22 10.6 22 6.13 17.52 2.5 12 2.5Zm-3.9 10.74H6.11a.53.53 0 0 1-.53-.52V8.73a.53.53 0 0 1 1.06 0v3.46H8.1a.53.53 0 0 1 0 1.05Zm2.06-.52a.53.53 0 0 1-1.06 0V8.73a.53.53 0 0 1 1.06 0v3.99Zm4.8 0a.53.53 0 0 1-.95.32l-2.04-2.78v2.46a.53.53 0 0 1-1.06 0V8.73a.53.53 0 0 1 .95-.32l2.04 2.78V8.73a.53.53 0 0 1 1.06 0v3.99Zm3.22-2.52a.53.53 0 0 1 0 1.05h-1.46v.94h1.46a.53.53 0 0 1 0 1.05h-1.99a.53.53 0 0 1-.52-.52V8.73c0-.29.23-.53.52-.53h1.99a.53.53 0 0 1 0 1.06h-1.46v.94h1.46Z"/></symbol>
+</svg>
 
-<main class="wrap">
-  <div class="hint-top">BNI · DIGITAL CARD</div>
+<nav class="nav" aria-label="主選單">
+  <div class="wrap">
+    <a class="brand" href="#top">邱一晉 Joey<small>AI SYSTEMS</small></a>
+    <ul>
+      <li><a href="#cases">精選案例</a></li>
+      <li><a href="#works">更多作品</a></li>
+      <li><a href="#services">服務項目</a></li>
+      <li><a href="#process">合作方式</a></li>
+      <li><a href="#course">AI 課程</a></li>
+    </ul>
+    <a class="nav-cta js-line" href="https://line.me/ti/p/~beta0805" target="_blank" rel="noopener">LINE 聊聊</a>
+  </div>
+</nav>
 
-  <button class="card" id="card-btn" type="button" aria-label="放大名片">
-    <img src="img/card.jpg" width="1024" height="1536" alt="邱一晉 Joey，AI 系統工程。用 AI 幫中小企業省人力：寫程式碼與系統開發、生成圖片、生成影片、生成音樂、生成 3D 模型、個人助理。">
-  </button>
-
-  <a class="add-line" href="https://line.me/ti/p/~beta0805" target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 2.5C6.48 2.5 2 6.13 2 10.6c0 4 3.55 7.36 8.35 8 .33.07.77.22.88.5.1.26.07.66.03.92l-.14.85c-.04.25-.2.98.86.53 1.06-.45 5.73-3.37 7.82-5.78C21.24 14.05 22 12.4 22 10.6 22 6.13 17.52 2.5 12 2.5Zm-3.9 10.74H6.11a.53.53 0 0 1-.53-.52V8.73a.53.53 0 0 1 1.06 0v3.46H8.1a.53.53 0 0 1 0 1.05Zm2.06-.52a.53.53 0 0 1-1.06 0V8.73a.53.53 0 0 1 1.06 0v3.99Zm4.8 0a.53.53 0 0 1-.95.32l-2.04-2.78v2.46a.53.53 0 0 1-1.06 0V8.73a.53.53 0 0 1 .95-.32l2.04 2.78V8.73a.53.53 0 0 1 1.06 0v3.99Zm3.22-2.52a.53.53 0 0 1 0 1.05h-1.46v.94h1.46a.53.53 0 0 1 0 1.05h-1.99a.53.53 0 0 1-.52-.52V8.73c0-.29.23-.53.52-.53h1.99a.53.53 0 0 1 0 1.06h-1.46v.94h1.46Z"/></svg>
-    加我 LINE 好友
-  </a>
-
-  <section class="info" aria-label="聯絡資訊">
-    <div class="row">
-      <span class="label">LINE ID</span>
-      <span class="val" id="line-id">beta0805</span>
-      <button class="copy" id="copy-btn" type="button">複製</button>
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <div class="who"><b>邱一晉 Joey</b><span>AI 系統工程師</span></div>
+      <h1>用 <span class="hl">AI</span> 幫中小企業<br>省人力</h1>
+      <p class="sub">一個人，做出一個團隊的產能。我把 AI 做成<strong>每天真的有人在用</strong>的工具——LINE 上的智慧助理、團隊內部系統、自動化報表，到行銷用的圖片與短影音，從需求、開發到上線一手包辦。</p>
+      <div class="cta-row">
+        <a class="btn btn-line js-line" href="https://line.me/ti/p/~beta0805" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-line"/></svg>加 LINE 聊需求</a>
+        <a class="btn btn-ghost" href="#cases">看做過的作品 ↓</a>
+      </div>
+      <ul class="proof">
+        <li>LINE 個人秘書已上線營運</li>
+        <li>團隊平台每日實際使用中</li>
+        <li>工程師背景，自己寫、自己部署</li>
+      </ul>
     </div>
-  </section>
+    <figure class="portrait" style="margin:0">
+      <img src="img/hero.jpg" width="1024" height="1280" alt="邱一晉 Joey 的形象照，周圍是 AI 小幫手公仔與數據面板">
+      <figcaption>專長：<b>LINE 整合 × AI 自動化 × 生成式影音</b></figcaption>
+    </figure>
+  </div>
+</header>
 
-  <a class="share-link" id="share-link" href="#" hidden>把這張名片分享給 LINE 好友 →</a>
+<section id="pains" style="padding-top:24px">
+  <div class="wrap">
+    <p class="eyebrow">Problems I solve</p>
+    <h2>這些事，其實可以不用再靠人力</h2>
+    <p class="lead">多數中小企業不缺 AI 工具，缺的是「有人幫你把它接進每天的工作流程」。以下是我最常幫忙解決的四種狀況：</p>
+    <div class="pains">
+      <div class="panel pain reveal"><p class="q">客人、員工的訊息回不完，事情常常忘記</p><p class="a"><b>LINE 智慧助理</b>在大家本來就用的 LINE 裡，自動提醒、自動回覆、自動記錄。</p></div>
+      <div class="panel pain reveal"><p class="q">資料散在群組、Excel 和每個人的手機裡</p><p class="a"><b>客製內部平台</b>登入、行事曆、客戶管理、教育訓練集中一處，手機就能用。</p></div>
+      <div class="panel pain reveal"><p class="q">每天都在查後台、貼報表、追名單</p><p class="a"><b>自動化排程</b>程式每天自動抓資料、整理重點，直接推播到 LINE。</p></div>
+      <div class="panel pain reveal"><p class="q">行銷素材靠外包，又慢又貴</p><p class="a"><b>AI 圖片與短影音</b>商品圖、海報、9:16 短影音，可快速改版、大量產出。</p></div>
+    </div>
+  </div>
+</section>
 
-  <p class="save-tip">點名片可放大；手機長按圖片即可存到相簿</p>
-</main>
+<section id="cases">
+  <div class="wrap">
+    <p class="eyebrow">Featured cases</p>
+    <h2>精選案例</h2>
+    <p class="lead">不是 Demo，是已經上線、每天有人在用的產品。</p>
 
-<div class="lightbox" id="lightbox" hidden>
-  <img src="img/card.jpg" alt="邱一晉 Joey 名片大圖">
-  <p>長按圖片存到相簿 · 點空白處關閉</p>
-</div>
+    <!-- 案例 1：LINE 個人秘書 -->
+    <article class="panel case reveal">
+      <div>
+        <div class="case-head"><span class="tag live">上線營運中</span><span class="tag">自有 SaaS 產品</span></div>
+        <h3>LINE 個人秘書「捎捎」</h3>
+        <p class="pitch">說一句話，重要的事幫你記。<br>不用下載新 App，打開 LINE 就有一位 24 小時的私人秘書。</p>
+        <div class="stats">
+          <div class="stat"><b>1 句話</b><span>可同時建立多個提醒</span></div>
+          <div class="stat"><b>40/40</b><span>語意理解情境測試全數通過</span></div>
+          <div class="stat"><b>每分鐘</b><span>自動排程，準時推播</span></div>
+        </div>
+        <dl>
+          <div><dt>CHALLENGE</dt><dd>一般人不會用 AI，也不想再多裝一個 App；但 AI 聽錯時間，提醒就失去意義。</dd></div>
+          <div><dt>SOLUTION</dt><dd>
+            <ul class="feat">
+              <li>打字或語音都行：「下週三下午三點帶媽媽看牙醫，前一天提醒我」</li>
+              <li>AI 先回一張<strong>確認卡</strong>，按下確認才生效，杜絕誤判</li>
+              <li>待辦、記事、記帳（一句話記多筆、自動分類）、週曆一次整合</li>
+              <li>「週五聚餐取消」「改到四點」——用說的就能修改</li>
+              <li>營運後台：每日報表、推播失敗即時告警</li>
+            </ul>
+          </dd></div>
+        </dl>
+        <div class="stack"><span class="tag">LINE Messaging API</span><span class="tag">LIFF</span><span class="tag">OpenAI</span><span class="tag">Google Cloud Run</span><span class="tag">PostgreSQL</span></div>
+        <p class="fit"><b>同樣的技術可以用在：</b>診所回診提醒、美業／教室預約通知、業務個人助理、店家會員自動回覆。</p>
+      </div>
+      <div class="case-media">
+        <img src="img/works/secretary-cover.jpg" width="800" height="650" alt="捎捎：揹著郵差包、手拿行事曆卡的藍鵲吉祥物，標語「說一句話，重要的事幫你記」" loading="lazy">
+        <img class="desk-only" src="img/works/secretary-menu.jpg" width="800" height="540" alt="LINE 圖文選單：今天、這週、我的記事、新增提醒、用說的、使用說明" loading="lazy">
+        <p class="media-note desk-only">品牌吉祥物與 LINE 圖文選單皆為本案自行設計產出</p>
+      </div>
+    </article>
+
+    <!-- 案例 2：花漾團隊平台 -->
+    <article class="panel case reveal">
+      <div>
+        <div class="case-head"><span class="tag live">團隊實際使用中</span><span class="tag">客製內部系統</span></div>
+        <h3>花漾團隊平台</h3>
+        <p class="pitch">給 10–30 人業務團隊的「線上辦公室」。<br>用 LINE 一鍵登入，訓練、客戶、行程、交流全在手機上完成。</p>
+        <div class="stats">
+          <div class="stat"><b>318 項</b><span>產品資料庫，隨查隨用</span></div>
+          <div class="stat"><b>257 題</b><span>內建測驗，訓練有成效</span></div>
+          <div class="stat"><b>$0</b><span>執行期 AI 費用，維運成本低</span></div>
+        </div>
+        <dl>
+          <div><dt>CHALLENGE</dt><dd>團隊靠 LINE 群組運作：訊息一洗就不見、新人訓練靠口耳相傳、客戶要不要跟進全憑記憶。</dd></div>
+          <div><dt>SOLUTION</dt><dd>
+            <ul class="feat">
+              <li><strong>客戶管理</strong>：購買後自動排 D+1／3／7／15 跟進，到期提醒</li>
+              <li><strong>知識學堂</strong>：產品查詢、隨堂測驗、個人知識雷達圖</li>
+              <li><strong>團隊行事曆</strong>＋活動頁一鍵分享 LINE，報名與付款狀態一頁看完</li>
+              <li><strong>每日 LINE 摘要</strong>：今天該跟進誰、什麼快到期，一則看完</li>
+              <li>每日簽到、效益日誌、虛擬共享空間，讓夥伴願意每天上線</li>
+            </ul>
+          </dd></div>
+        </dl>
+        <div class="stack"><span class="tag">Next.js</span><span class="tag">Supabase</span><span class="tag">LINE Login</span><span class="tag">LINE 推播</span><span class="tag">PWA</span></div>
+        <p class="fit"><b>設計重點：</b>客戶資料只有本人看得到（連管理者都看不到明細）；不做排行榜，避免熟人團隊互相比較——系統要讓人「想用」，而不只是「被要求用」。</p>
+      </div>
+      <div class="case-media">
+        <div class="shots" tabindex="0" aria-label="花漾團隊平台畫面，可左右滑動">
+          <img src="img/works/huayang-crm.jpg" width="540" height="675" alt="客戶管理：客戶數、本月購買、待跟進與逾期數量" loading="lazy">
+          <img src="img/works/huayang-calendar.jpg" width="540" height="675" alt="團隊行事曆：日誌、自動購貨、活動分類月曆" loading="lazy">
+          <img src="img/works/huayang-event.jpg" width="540" height="675" alt="活動一鍵分享：活動 EDM、參與人數與付款狀態" loading="lazy">
+          <img src="img/works/huayang-knowledge.jpg" width="540" height="675" alt="知識學堂：個人知識領域雷達圖" loading="lazy">
+          <img src="img/works/huayang-flower.jpg" width="540" height="675" alt="每天一朵花：每日簽到與連續天數" loading="lazy">
+          <img src="img/works/huayang-lounge.jpg" width="540" height="675" alt="亮著的窗：虛擬共享空間，看見誰正在努力" loading="lazy">
+        </div>
+        <p class="media-note">← 左右滑動看更多畫面 →</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="works">
+  <div class="wrap">
+    <p class="eyebrow">More works</p>
+    <h2>更多作品</h2>
+    <p class="lead">從一次性的小工具到每天自動跑的流程，每個都是為了「少做一件重複的事」。</p>
+    <div class="works">
+      <div class="panel work wide reveal">
+        <div class="txt">
+          <div class="ico" aria-hidden="true">🎬</div>
+          <h3>AI 行銷短影音</h3>
+          <p>用程式產出 9:16 直式短影音：課程招生宣傳片、產品成分知識系列。配樂為原創合成，沒有版權疑慮；改文案、換產品只要重新輸出，適合需要大量素材的社群經營。</p>
+          <span class="val">一套模板，系列內容快速量產</span>
+        </div>
+        <div class="vids">
+          <img src="img/works/video-course.jpg" width="480" height="853" alt="課程宣傳片畫面：AI 小白的第一堂實戰課" loading="lazy">
+          <img src="img/works/video-course2.jpg" width="480" height="853" alt="課程宣傳片畫面：聘請 24 小時秘書" loading="lazy">
+          <img src="img/works/video-fishoil.jpg" width="480" height="853" alt="成分拆解短片畫面：看標示比看廣告準" loading="lazy">
+        </div>
+      </div>
+      <div class="panel work reveal">
+        <div class="ico" aria-hidden="true">🗂️</div>
+        <h3>團隊知識庫 LINE Bot</h3>
+        <p>在 LINE 群組丟檔案，自動存進 Google Drive 並由 AI 建議分類；要找資料直接打「心血管保健」這樣的白話，回傳雲端連結。</p>
+        <span class="val">資料不再沉在聊天紀錄裡</span>
+      </div>
+      <div class="panel work reveal">
+        <div class="ico" aria-hidden="true">👔</div>
+        <h3>專業形象照工作室</h3>
+        <p>一張生活照，產出商務形象照：去背、攝影棚背景、補光，或換上西裝的上半身照。臉部以原照為準，頭像模式全程在本機處理。</p>
+        <span class="val">省下棚拍時間，照片仍然像本人</span>
+      </div>
+      <div class="panel work reveal">
+        <div class="ico" aria-hidden="true">📡</div>
+        <h3>自動化情報雷達</h3>
+        <p>每天自動抓取熱門關鍵字趨勢、機票價格、GitHub 爆紅 AI 專案，存成歷史紀錄、產出報表，有變化才推播到 LINE。</p>
+        <span class="val">讓程式替你盯盤，有事才通知</span>
+      </div>
+      <div class="panel work reveal">
+        <div class="ico" aria-hidden="true">📊</div>
+        <h3>業務報表自動判讀</h3>
+        <p>自動讀取會員後台報表，依規則篩出「快要失去資格、需要提醒」的名單並附判斷依據，取代每月逐列人工比對。</p>
+        <span class="val">幾十分鐘的比對，縮短到一句指令</span>
+      </div>
+      <div class="panel work reveal">
+        <div class="ico" aria-hidden="true">📝</div>
+        <h3>證照考古題測驗系統</h3>
+        <p>把 18 份考古題 PDF 整理成 1,440 題線上測驗，可依科目、年度篩選，並分析出 127 組歷屆重複考題與高頻考點。</p>
+        <span class="val">適合補習班、企業內訓、題庫數位化</span>
+      </div>
+      <div class="panel work reveal">
+        <div class="ico" aria-hidden="true">🪪</div>
+        <h3>LINE 電子名片</h3>
+        <p>就是你正在看的這一頁，加上一套 LINE 可左右滑動的名片卡，一鍵轉傳給好友或群組，對方點開就能加好友、報名課程。</p>
+        <span class="val">交換名片，順便完成第一次行銷</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <p class="eyebrow">Services</p>
+    <h2>我能用 AI 幫你做的事</h2>
+    <p class="lead">模型可以很多，入口只要一個。你只需要說清楚想省下哪些時間，工具怎麼選、怎麼接，交給我。</p>
+    <div class="services">
+      <div class="panel svc reveal"><img src="img/s1.jpg" width="800" height="800" alt="" loading="lazy"><div class="body"><h3>系統開發</h3><ul><li>客製內部系統、報表自動化</li><li>官網、預約、表單串接</li><li>重複作業交給程式跑</li></ul></div></div>
+      <div class="panel svc reveal"><img src="img/s6.jpg" width="800" height="800" alt="" loading="lazy"><div class="body"><h3>LINE 智慧助理</h3><ul><li>行程、待辦、到期提醒</li><li>客人常見問題自動回覆</li><li>資料整理、會議摘要</li></ul></div></div>
+      <div class="panel svc reveal"><img src="img/s2.jpg" width="800" height="800" alt="" loading="lazy"><div class="body"><h3>AI 生成圖片</h3><ul><li>商品圖、活動海報</li><li>社群貼文配圖、品牌角色</li><li>不用每次等設計外包</li></ul></div></div>
+      <div class="panel svc reveal"><img src="img/s3.jpg" width="800" height="800" alt="" loading="lazy"><div class="body"><h3>AI 生成影片</h3><ul><li>產品介紹短片</li><li>社群短影音素材</li><li>一張圖變成動態影片</li></ul></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <p class="eyebrow">How we work</p>
+    <h2>合作方式：先做小、驗證有效再擴大</h2>
+    <p class="lead">不需要一次投入大筆預算。先挑一個最花時間的流程，做出來、用看看，有感再往下做。</p>
+    <ol class="steps">
+      <li class="panel reveal"><b>聊需求</b><p>LINE 上聊聊你現在怎麼做、哪裡最花時間，我幫你判斷哪些適合交給 AI。</p></li>
+      <li class="panel reveal"><b>做原型</b><p>先做一個能實際操作的小版本，你和團隊試用，回饋再調整。</p></li>
+      <li class="panel reveal"><b>正式上線</b><p>部署到雲端、接上 LINE 或既有系統，附使用說明，讓非技術同仁也能上手。</p></li>
+      <li class="panel reveal"><b>持續優化</b><p>看實際使用狀況調整，有新需求再逐步加功能。</p></li>
+    </ol>
+    <p class="panel promise"><b>我的堅持：</b>成本透明（能不用付費 AI 就不用）、資料安全（客戶資料權限分明）、功能要真的被用——做出來沒人用，就不算完成。</p>
+  </div>
+</section>
+
+<section id="course">
+  <div class="wrap">
+    <p class="eyebrow">AI course &amp; coaching</p>
+    <h2>不想外包？也可以自己學會</h2>
+    <p class="lead">實體小班課與一對一陪跑，帶你把 AI 真正用進自己的工作。</p>
+    <div class="panel course reveal">
+      <img src="img/course.jpg" width="1024" height="1536" alt="AI 小白的第一堂實戰課 海報" loading="lazy">
+      <div>
+        <span class="tag">實體小班課</span>
+        <h3>AI 小白的第一堂實戰課</h3>
+        <ul class="outcomes">
+          <li><b>01</b>打造你專屬的 AI 顧問</li>
+          <li><b>02</b>讓 AI 自己操作電腦、瀏覽器</li>
+          <li><b>03</b>記帳、計算機等小工具自己做</li>
+          <li><b>04</b>LINE 上的 24 小時秘書</li>
+        </ul>
+        <div class="info-rows" id="course-info">
+          <div><b>時間</b>11/7（六）14:00–16:00</div>
+          <div><b>地點</b>新北市中和區（啵啵哈哈鬆餅專賣）</div>
+          <div><b>費用</b>600 元（含場地費、小點心）</div>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-line" href="https://docs.google.com/forms/d/e/1FAIpQLSeKzUN3lAfPUH5pFcaCfzYgez0CRfYhbKvoDqLdlZgkxyZh2w/viewform" target="_blank" rel="noopener">立即報名</a>
+          <a class="btn btn-ghost js-line" href="https://line.me/ti/p/~beta0805" target="_blank" rel="noopener">預約一對一陪跑</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="padding-bottom:40px">
+  <div class="wrap">
+    <div class="panel contact reveal">
+      <p class="eyebrow">Let's talk</p>
+      <h2>有一件事，你每天都在重複做嗎？</h2>
+      <p>傳給我看看。告訴我你的流程，我會直接告訴你：哪些 AI 做得到、大概要怎麼做。</p>
+      <div class="cta-row">
+        <a class="btn btn-line js-line" href="https://line.me/ti/p/~beta0805" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-line"/></svg>加我 LINE 好友</a>
+        <a class="btn btn-ghost" id="share-link" href="#" hidden>把名片分享給 LINE 好友</a>
+      </div>
+      <div class="idrow">LINE ID <code id="line-id">beta0805</code><button class="copy" id="copy-btn" type="button">複製</button></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0 0 8px"><a href="card.html">名片圖檔版</a>·<a href="#top">回到頂端</a></p>
+    © 邱一晉 Joey · AI 系統工程
+  </div>
+</footer>
+
+<a class="btn btn-line dock js-line" href="https://line.me/ti/p/~beta0805" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-line"/></svg>加 LINE 聊需求</a>
 
 <script src="config.js"></script>
 <script>
-if (window.BNI_CONFIG.liffId) { const s = document.getElementById('share-link'); s.href = 'https://liff.line.me/' + BNI_CONFIG.liffId; s.hidden = false; }
-const lb = document.getElementById('lightbox');
-document.getElementById('card-btn').addEventListener('click', () => { lb.hidden = false; });
-lb.addEventListener('click', (e) => { if (e.target !== lb.querySelector('img')) lb.hidden = true; });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') lb.hidden = true; });
+const cfg = window.BNI_CONFIG || {};
+if (cfg.lineAdd) document.querySelectorAll('.js-line').forEach((a) => { a.href = cfg.lineAdd; });
+if (cfg.liffId) { const s = document.getElementById('share-link'); s.href = 'https://liff.line.me/' + cfg.liffId; s.hidden = false; }
 
 const btn = document.getElementById('copy-btn');
 btn.addEventListener('click', () => {
+  const id = document.getElementById('line-id').textContent;
   const done = () => { btn.textContent = '已複製'; setTimeout(() => { btn.textContent = '複製'; }, 1600); };
   const fallback = () => {
     const r = document.createRange(); r.selectNodeContents(document.getElementById('line-id'));
     const s = getSelection(); s.removeAllRanges(); s.addRange(r);
     btn.textContent = '已選取';
   };
-  try { navigator.clipboard.writeText('beta0805').then(done, fallback); } catch (_) { fallback(); }
+  try { navigator.clipboard.writeText(id).then(done, fallback); } catch (_) { fallback(); }
 });
-</script>
 
+// 捲到才淡入；不支援 IntersectionObserver 時直接顯示
+const items = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  items.forEach((el) => io.observe(el));
+} else items.forEach((el) => el.classList.add('in'));
+</script>
 </body>
 </html>

@@ -142,7 +142,19 @@ h2 { font-size: clamp(26px, 4.4vw, 38px); line-height: 1.3; margin: 0 0 12px; fo
 .case-media img { border-radius: 14px; border: 1px solid var(--edge); }
 .case-video { position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--edge); background: #f6f2ec; aspect-ratio: 960 / 668; }
 .case-video video { display: block; width: 100%; height: 100%; object-fit: cover; }
-.case-video .play { position: absolute; inset: 0; display: grid; place-items: center; background: transparent; border: 0; color: #fff; font-size: 56px; text-shadow: 0 2px 12px rgba(0,0,0,.5); }
+.case-video video { cursor: pointer; }
+.case-interior { grid-template-columns: 0.85fr 1.15fr; align-items: center; }
+.case-interior .pain-title { font-size: clamp(28px, 3.3vw, 40px); white-space: nowrap; line-height: 1.25; margin: 6px 0 2px; }
+.case-interior .pain-sub { font-size: clamp(22px, 3vw, 28px); font-weight: 900; margin: 0 0 14px; background: linear-gradient(90deg, var(--cyan), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.case-interior .pitch { margin-bottom: 18px; }
+.vs { display: grid; gap: 8px; }
+.vs-row { display: flex; gap: 12px; align-items: baseline; padding: 10px 14px; border-radius: 12px; font-size: 15px; }
+.vs-row b { flex: none; font-size: 13px; letter-spacing: .1em; }
+.vs-row.before { background: rgba(255, 255, 255, 0.04); color: var(--muted); }
+.vs-row.before span { text-decoration: line-through; text-decoration-color: rgba(147, 169, 200, .5); }
+.vs-row.after { background: rgba(6, 199, 85, 0.1); border: 1px solid rgba(6, 199, 85, 0.35); }
+.vs-row.after b { color: var(--line-hi); }
+@media (max-width: 860px) { .case-interior { grid-template-columns: 1fr; } }
 .cta-mini { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
 .cta-mini .btn { min-height: 46px; font-size: 15px; padding: 0 18px; }
 .shots { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; scrollbar-width: thin; }
@@ -299,43 +311,29 @@ footer a { color: var(--cyan); text-decoration: none; margin: 0 8px; }
     <h2>精選案例</h2>
     <p class="lead">給室內設計師的最新方案，加上已經上線、每天有人在用的兩個產品。</p>
 
-    <!-- 案例 0：室內設計｜空間風格提案（只放商業價值，不放實作細節） -->
-    <article class="panel case reveal" id="interior">
+    <!-- 案例 0：室內設計｜空間風格提案（只講要解決的痛點：設計師與業主的來回溝通） -->
+    <article class="panel case case-interior reveal" id="interior">
       <div>
-        <div class="case-head"><span class="tag live">新方案</span><span class="tag">室內設計師專用</span><span class="tag">平板當場展示</span></div>
-        <h3>業主說不出想要什麼？<br>讓他「點圖」就好</h3>
-        <p class="pitch">一張空屋照，就能生成幾種風格的改造概念。在平板上讓業主點選喜歡的風格、勾選喜歡與不喜歡的元素，需求摘要一鍵傳到你的 LINE——第一次見面就抓到方向。</p>
-        <div class="stats">
-          <div class="stat"><b>1 張</b><span>空屋照就能開始提案</span></div>
-          <div class="stat"><b>3 種</b><span>風格並排，拖曳對照</span></div>
-          <div class="stat"><b>1 鍵</b><span>需求摘要傳到你的 LINE</span></div>
+        <div class="case-head"><span class="tag live">新方案</span><span class="tag">室內設計師專用</span></div>
+        <h3 class="pain-title">業主說不出想要什麼？</h3>
+        <p class="pain-sub">讓他用「點」的。</p>
+        <p class="pitch">在平板上點風格、勾喜歡的元素，需求自動整理好傳到你的 LINE。</p>
+        <div class="vs">
+          <div class="vs-row before"><b>以前</b><span>畫完 3D 才發現方向不對，一改再改</span></div>
+          <div class="vs-row after"><b>現在</b><span>第一次見面，業主就自己點出方向</span></div>
         </div>
-        <dl>
-          <div><dt>CHALLENGE</dt><dd>業主常說「簡單就好」「溫馨一點」。畫完 3D 才發現方向不對，一改再改，時間都花在來回溝通。</dd></div>
-          <div><dt>SOLUTION</dt><dd>
-            <ul class="feat">
-              <li><strong>用圖片選風格</strong>：業主不用懂風格名詞，看到喜歡的就點</li>
-              <li><strong>現在 vs. 改造後</strong>：同一間房、同一個角度，手指一拖就看懂差別</li>
-              <li><strong>勾選偏好元素</strong>：喜歡淺色木頭、不要清水模，連「家裡有貓」都能記下來</li>
-              <li><strong>需求摘要傳 LINE</strong>：展示完一鍵送出，下次提案直接從這裡開始</li>
-              <li><strong>不誤導業主</strong>：門窗位置逐張檢查，畫面標示「概念提案，非施工圖」</li>
-            </ul>
-          </dd></div>
-        </dl>
-        <p class="fit"><b>兩種合作方式：</b>先用你手上一個案場試做一次；或教你自己用 ChatGPT 照步驟做，以後每個案子自己跑。</p>
         <div class="cta-mini">
-          <a class="btn btn-ghost" href="style-proposal/?demo=1" target="_blank" rel="noopener">在平板上試玩示範 →</a>
-          <a class="btn btn-line js-line" href="https://line.me/ti/p/~beta0805" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-line"/></svg>預約用你的案場試做</a>
+          <a class="btn btn-line js-line" href="https://line.me/ti/p/~beta0805" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-line"/></svg>用你的案場免費試做</a>
+          <a class="btn btn-ghost" href="style-proposal/?demo=1" target="_blank" rel="noopener">平板試玩 →</a>
         </div>
       </div>
       <div class="case-media">
         <div class="case-video">
-          <video id="interior-video" muted loop playsinline preload="none" poster="img/works/style-proposal-poster.jpg" aria-label="示範：業主在平板上點選風格、拖曳對照、勾選偏好，最後把需求摘要傳給設計師">
+          <video id="interior-video" muted loop playsinline preload="none" poster="img/works/style-proposal-poster.jpg" aria-label="示範：業主在平板上點選風格、拖曳看改造前後、勾選喜歡的元素，需求摘要傳到設計師的 LINE">
             <source data-src="img/works/style-proposal-loop.mp4" type="video/mp4">
           </video>
-          <button class="play" type="button" id="interior-play" hidden aria-label="播放示範影片">▶</button>
         </div>
-        <p class="media-note">示範案例為虛構；畫面中的風格圖為概念提案，非施工圖</p>
+        <p class="media-note">示範案例為虛構；風格圖為概念提案，非施工圖</p>
       </div>
     </article>
 
@@ -580,23 +578,18 @@ if ('IntersectionObserver' in window) {
   items.forEach((el) => io.observe(el));
 } else items.forEach((el) => el.classList.add('in'));
 
-// 室內設計示範影片：捲到才載入並播放，離開畫面就暫停；偏好減少動態時改成點了才播
+// 室內設計示範影片：捲到才載入並播放，離開畫面就暫停。不顯示任何播放圖示：
+// 偏好減少動態、或瀏覽器擋自動播放時，停在第一格，點影片才播
 const vid = document.getElementById('interior-video');
-const playBtn = document.getElementById('interior-play');
 const loadVid = () => { const s = vid.querySelector('source'); if (!s.src) { s.src = s.dataset.src; vid.load(); } };
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (reduce || !('IntersectionObserver' in window)) {
-  playBtn.hidden = false;
-  playBtn.addEventListener('click', () => { loadVid(); vid.controls = true; vid.play(); playBtn.hidden = true; });
-} else {
+vid.addEventListener('click', () => { loadVid(); if (vid.paused) vid.play().catch(() => {}); else vid.pause(); });
+if (!reduce && 'IntersectionObserver' in window) {
   new IntersectionObserver((es) => es.forEach((e) => {
-    // 只有瀏覽器擋自動播放（NotAllowedError）才顯示播放鍵；被 pause() 打斷不算
-    if (e.isIntersecting) { loadVid(); vid.play().catch((err) => { if (err.name === 'NotAllowedError') playBtn.hidden = false; }); }
+    if (e.isIntersecting) { loadVid(); vid.play().catch(() => {}); }
     else vid.pause();
   }), { threshold: 0.35 }).observe(vid);
-  playBtn.addEventListener('click', () => { vid.play(); playBtn.hidden = true; });
 }
-vid.addEventListener('playing', () => { playBtn.hidden = true; });
 </script>
 </body>
 </html>

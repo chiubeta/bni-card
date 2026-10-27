@@ -154,6 +154,19 @@ h2 { font-size: clamp(26px, 4.4vw, 38px); line-height: 1.3; margin: 0 0 12px; fo
 .vs-row.before span { text-decoration: line-through; text-decoration-color: rgba(147, 169, 200, .5); }
 .vs-row.after { background: rgba(6, 199, 85, 0.1); border: 1px solid rgba(6, 199, 85, 0.35); }
 .vs-row.after b { color: var(--line-hi); }
+.case-poster .pain-title { white-space: normal; }
+.pv-pair { display: grid; grid-template-columns: 80fr 56.25fr; gap: 14px; align-items: start; }
+.pv-pair figure { margin: 0; display: grid; gap: 8px; }
+.pv-pair img, .pv-video { width: 100%; border-radius: 12px; border: 1px solid var(--edge); }
+.pv-video { overflow: hidden; aspect-ratio: 9 / 16; background: #f3eee6; }
+.pv-video video { display: block; width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
+.pv-pair figcaption { text-align: center; font-size: 13px; color: var(--muted); letter-spacing: .1em; }
+.pv-pair[hidden] { display: none; }
+.pv-pair .media-note { grid-column: 1 / -1; }
+.pv-course { grid-template-columns: 66.67fr 56.25fr; }
+.pv-tabs { display: flex; gap: 8px; margin-bottom: 4px; }
+.pv-tabs button { font: inherit; font-size: 14px; padding: 7px 16px; border-radius: 999px; border: 1px solid var(--edge); background: transparent; color: var(--muted); cursor: pointer; }
+.pv-tabs button[aria-selected="true"] { background: rgba(6, 199, 85, 0.12); border-color: rgba(6, 199, 85, 0.45); color: var(--text, #fff); }
 @media (max-width: 860px) { .case-interior { grid-template-columns: 1fr; } }
 .cta-mini { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
 .cta-mini .btn { min-height: 46px; font-size: 15px; padding: 0 18px; }
@@ -258,6 +271,7 @@ footer a { color: var(--cyan); text-decoration: none; margin: 0 8px; }
     <a class="brand" href="#top">邱一晉 Joey<small>AI SYSTEMS</small></a>
     <ul>
       <li><a href="#interior">室內設計</a></li>
+      <li><a href="#poster-video">海報變短片</a></li>
       <li><a href="#cases">精選案例</a></li>
       <li><a href="#works">更多作品</a></li>
       <li><a href="#services">服務項目</a></li>
@@ -309,7 +323,7 @@ footer a { color: var(--cyan); text-decoration: none; margin: 0 8px; }
   <div class="wrap">
     <p class="eyebrow">Featured cases</p>
     <h2>精選案例</h2>
-    <p class="lead">給室內設計師的最新方案，加上已經上線、每天有人在用的兩個產品。</p>
+    <p class="lead">給工作室的兩個新方案，加上已經上線、每天有人在用的兩個產品。</p>
 
     <!-- 案例 0：室內設計｜空間風格提案（只講要解決的痛點：設計師與業主的來回溝通） -->
     <article class="panel case case-interior reveal" id="interior">
@@ -334,6 +348,43 @@ footer a { color: var(--cyan); text-decoration: none; margin: 0 8px; }
           </video>
         </div>
         <p class="media-note">示範案例為虛構；風格圖為概念提案，非施工圖</p>
+      </div>
+    </article>
+
+    <!-- 案例 0b：一張海報變展示片（W05；示範工作室為虛構） -->
+    <article class="panel case case-interior case-poster reveal" id="poster-video">
+      <div>
+        <div class="case-head"><span class="tag live">新方案</span><span class="tag">店家・工作室適用</span></div>
+        <h3 class="pain-title">讓圖片動起來</h3>
+        <p class="pain-sub">海報不再滑一下就過。</p>
+        <p class="pitch">你手上現成的海報，變成一支直式短片，限時動態、Reels、LINE 都能發。</p>
+        <div class="vs">
+          <div class="vs-row before"><b>以前</b><span>資訊全擠在一張圖，沒人看完</span></div>
+          <div class="vs-row after"><b>現在</b><span>一次講一件事，最後一幕就是預約資訊</span></div>
+        </div>
+        <div class="cta-mini">
+          <a class="btn btn-line js-line" href="https://line.me/ti/p/~beta0805" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-line"/></svg>拿你的海報免費試做</a>
+        </div>
+      </div>
+      <div class="case-media">
+        <div class="pv-tabs" role="tablist" aria-label="範例">
+          <button type="button" role="tab" aria-selected="true" data-pv="0">室內設計開放日</button>
+          <button type="button" role="tab" aria-selected="false" data-pv="1">AI 實戰課招生</button>
+        </div>
+        <div class="pv-pair" data-pv-pane="0">
+          <figure><img src="img/works/poster-demo.jpg?v=1" width="600" height="750" alt="原海報：森居設計空間規劃開放日，空屋照片、三種風格縮圖、三項服務與預約資訊" loading="lazy"><figcaption>原海報</figcaption></figure>
+          <figure><div class="pv-video"><video class="js-autovid" muted loop playsinline preload="none" poster="img/works/poster-video-poster.jpg?v=4" aria-label="展示片：空屋照片、同一空間三種風格依序掃入、開放日三項服務，最後停在原海報">
+            <source data-src="img/works/poster-video.mp4?v=4" type="video/mp4">
+          </video></div><figcaption>展示片</figcaption></figure>
+          <p class="media-note">示範工作室為虛構；風格圖為概念提案</p>
+        </div>
+        <div class="pv-pair pv-course" data-pv-pane="1" hidden>
+          <figure><img src="img/works/course-poster.jpg?v=1" width="600" height="900" alt="原海報：AI 小白的第一堂實戰課，講師照片、課程時間地點與四個課堂成果" loading="lazy"><figcaption>原海報</figcaption></figure>
+          <figure><div class="pv-video"><video class="js-autovid" muted loop playsinline preload="none" poster="img/works/course-video-poster.jpg?v=1" aria-label="招生短片：課程標題、四個課堂成果逐一介紹，最後停在原海報">
+            <source data-src="img/works/course-video.mp4?v=1" type="video/mp4">
+          </video></div><figcaption>招生短片</figcaption></figure>
+          <p class="media-note">2026 年 10 月實際開課的招生素材（場次已結束）</p>
+        </div>
       </div>
     </article>
 
@@ -578,18 +629,28 @@ if ('IntersectionObserver' in window) {
   items.forEach((el) => io.observe(el));
 } else items.forEach((el) => el.classList.add('in'));
 
-// 室內設計示範影片：捲到才載入並播放，離開畫面就暫停。不顯示任何播放圖示：
+// 案例示範影片：捲到才載入並播放，離開畫面就暫停。不顯示任何播放圖示：
 // 偏好減少動態、或瀏覽器擋自動播放時，停在第一格，點影片才播
-const vid = document.getElementById('interior-video');
-const loadVid = () => { const s = vid.querySelector('source'); if (!s.src) { s.src = s.dataset.src; vid.load(); } };
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-vid.addEventListener('click', () => { loadVid(); if (vid.paused) vid.play().catch(() => {}); else vid.pause(); });
-if (!reduce && 'IntersectionObserver' in window) {
-  new IntersectionObserver((es) => es.forEach((e) => {
-    if (e.isIntersecting) { loadVid(); vid.play().catch(() => {}); }
-    else vid.pause();
-  }), { threshold: 0.35 }).observe(vid);
-}
+document.querySelectorAll('#interior-video, .js-autovid').forEach((vid) => {
+  const loadVid = () => { const s = vid.querySelector('source'); if (!s.src) { s.src = s.dataset.src; vid.load(); } };
+  vid.addEventListener('click', () => { loadVid(); if (vid.paused) vid.play().catch(() => {}); else vid.pause(); });
+  if (!reduce && 'IntersectionObserver' in window) {
+    new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) { loadVid(); vid.play().catch(() => {}); }
+      else vid.pause();
+    }), { threshold: 0.35 }).observe(vid);
+  }
+});
+
+// 海報變短片：切換範例；隱藏那組的影片暫停，新顯示那組由上面的觀察器接手播放
+document.querySelectorAll('.pv-tabs button').forEach((btn) => btn.addEventListener('click', () => {
+  document.querySelectorAll('.pv-tabs button').forEach((b) => b.setAttribute('aria-selected', String(b === btn)));
+  document.querySelectorAll('[data-pv-pane]').forEach((p) => {
+    p.hidden = p.dataset.pvPane !== btn.dataset.pv;
+    if (p.hidden) p.querySelector('video').pause();
+  });
+}));
 </script>
 </body>
 </html>

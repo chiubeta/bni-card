@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f6f2ec">
+<title>空間風格提案</title>
+<meta name="description" content="一張空屋照、幾種風格概念圖，在平板上讓業主點選風格與偏好元素，一鍵把需求摘要傳給設計師。照片只存在這台裝置。">
+<style>
+/* 純 HTML/CSS/JS，無外部函式庫；資料存在這台裝置的 IndexedDB，不上傳任何伺服器 */
+:root {
+  --bg: #f6f2ec; --paper: #fffdf9; --ink: #2b2620; --muted: #7a6f63; --line: #e4dbcf;
+  --accent: #8a5a2b; --accent-soft: #f1e4d4; --ok: #3f7a4a; --ok-soft: #e6f2e8;
+  --no: #b0413e; --no-soft: #fbeaea; --warn: #a2611a; --r: 16px;
+  --f: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f); font-size: 17px; line-height: 1.65; }
+img { display: block; max-width: 100%; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+[hidden] { display: none !important; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-left)) 0 max(16px, env(safe-area-inset-right)); }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 20px; border-radius: 12px; border: 1px solid var(--line); background: var(--paper); font-weight: 700; text-decoration: none; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.line { background: #06c755; border-color: #06c755; color: #fff; }
+.btn.ghost { background: transparent; }
+.btn.small { min-height: 38px; padding: 0 14px; font-size: 15px; font-weight: 500; }
+.btn:disabled { opacity: .4; cursor: default; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.badge { display: inline-block; font-size: 13px; padding: 2px 12px; border-radius: 999px; background: #fff3e0; color: var(--warn); border: 1px solid #f0d2a8; }
+.muted { color: var(--muted); }
+h1 { font-size: clamp(26px, 4.5vw, 36px); line-height: 1.3; margin: 0 0 6px; }
+h2 { font-size: 22px; margin: 0 0 8px; }
+h3 { font-size: 18px; margin: 0 0 6px; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 999px; font-size: 15px; z-index: 50; }
+
+/* ── 首頁 ── */
+#home { padding: 40px 0 60px; }
+.hero-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0 32px; }
+.plist { display: grid; gap: 12px; }
+.pitem { display: flex; align-items: center; gap: 14px; padding: 12px; }
+.pitem img { width: 96px; height: 64px; object-fit: cover; border-radius: 10px; flex: none; background: var(--line); }
+.pitem .meta { flex: 1; min-width: 0; }
+.pitem .meta b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pitem .acts { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.help { margin-top: 36px; padding: 20px 22px; }
+.help ol { margin: 8px 0 0; padding-left: 22px; }
+.help li { margin: 4px 0; }
+
+/* ── 設定 ── */
+#setup { padding: 24px 0 80px; }
+.topbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+.topbar .sp { flex: 1; }
+.sec { padding: 18px 20px; margin-bottom: 16px; }
+.field { display: grid; gap: 4px; margin-bottom: 12px; }
+.field input, .field textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+.field textarea { min-height: 150px; font-family: ui-monospace, Consolas, monospace; font-size: 14px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
+.slot { position: relative; display: grid; place-items: center; aspect-ratio: 3 / 2; border: 2px dashed var(--line); border-radius: 12px; background: #fff; overflow: hidden; cursor: pointer; text-align: center; color: var(--muted); font-size: 15px; padding: 0; width: 100%; }
+.slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.slot.filled { border-style: solid; }
+.slot .tag { position: absolute; left: 8px; top: 8px; background: rgba(0,0,0,.6); color: #fff; font-size: 12px; padding: 2px 10px; border-radius: 999px; }
+.style-block { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px; }
+.overlay { position: relative; border-radius: 12px; overflow: hidden; margin-top: 10px; }
+.overlay .top { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.qa { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 4px 12px; margin-top: 10px; font-size: 15px; }
+.qa label { display: flex; gap: 8px; align-items: center; }
+.qa input { width: 20px; height: 20px; accent-color: var(--ok); }
+.okline { color: var(--ok); font-weight: 700; }
+.err { color: var(--no); font-size: 15px; white-space: pre-line; }
+.results { display: grid; gap: 10px; }
+.results .card { padding: 12px 14px; font-size: 15px; white-space: pre-line; }
+
+/* ── 展示（業主看） ── */
+#show { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+.show-head { display: flex; align-items: center; gap: 12px; padding: 12px max(16px, env(safe-area-inset-left)); background: var(--paper); border-bottom: 1px solid var(--line); }
+.show-head .t { flex: 1; min-width: 0; }
+.show-head .t small { display: block; color: var(--accent); font-size: 13px; letter-spacing: .1em; }
+.show-head .t b { display: block; font-size: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pills { display: flex; gap: 6px; overflow-x: auto; padding: 10px max(16px, env(safe-area-inset-left)); scrollbar-width: none; }
+.pill { flex: none; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); font-size: 15px; }
+.pill[aria-current="step"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+.stage { flex: 1; padding: 6px max(16px, env(safe-area-inset-left)) 16px; width: 100%; max-width: 1120px; margin: 0 auto; }
+.lead { font-size: 19px; margin: 0 0 14px; }
+/* 照片整張放進一個畫面：高度扣掉上方標題列、步驟列、說明與下方按鈕列 */
+.fit { margin: 0 auto; max-width: calc((100dvh - var(--chrome, 300px)) * var(--ar, 1.5)); }
+.big-photo { border-radius: var(--r); overflow: hidden; }
+.choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+@media (max-width: 700px) { .choices { grid-template-columns: repeat(2, 1fr); } }
+.choice { position: relative; padding: 0; border: 3px solid transparent; border-radius: var(--r); overflow: hidden; background: var(--paper); text-align: left; }
+.choice img { aspect-ratio: 1; object-fit: cover; width: 100%; }
+.choice span { display: block; padding: 10px 14px; font-weight: 700; font-size: 19px; }
+.choice small { display: block; font-weight: 400; color: var(--muted); font-size: 14px; }
+.choice[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+.choice[aria-pressed="true"]::after { content: "✓"; position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 20px; font-weight: 900; }
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+.tab { padding: 8px 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); font-size: 17px; }
+.tab[aria-selected="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tab .heart { color: #e0457b; }
+.compare { position: relative; overflow: hidden; border-radius: var(--r); user-select: none; touch-action: none; }
+.compare img { width: 100%; pointer-events: none; }
+.compare .after { position: absolute; inset: 0; clip-path: inset(0 0 0 var(--pos, 50%)); }
+.compare .after img { height: 100%; object-fit: cover; }
+.compare .bar { position: absolute; top: 0; bottom: 0; left: var(--pos, 50%); width: 4px; margin-left: -2px; background: #fff; box-shadow: 0 0 8px rgba(0,0,0,.35); }
+.compare .bar::after { content: "⇆"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 52px; height: 52px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 24px; color: var(--accent); box-shadow: 0 2px 10px rgba(0,0,0,.3); }
+.compare .lbl { position: absolute; top: 12px; font-size: 14px; padding: 3px 12px; border-radius: 999px; background: rgba(0,0,0,.55); color: #fff; }
+.compare .lbl.l { left: 12px; } .compare .lbl.r { right: 12px; }
+.fav-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
+.fav { min-height: 52px; padding: 0 22px; border-radius: 999px; border: 2px solid #e0457b; background: #fff; color: #e0457b; font-weight: 700; font-size: 18px; }
+.fav[aria-pressed="true"] { background: #e0457b; color: #fff; }
+.diff { width: 100%; border-collapse: collapse; font-size: 17px; }
+.diff th, .diff td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.diff thead th { background: var(--accent-soft); }
+.diff tbody th { color: var(--muted); font-weight: 500; white-space: nowrap; }
+.scroll { overflow-x: auto; }
+.pref-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 700px) { .pref-grid { grid-template-columns: 1fr; } }
+.pref-grid .card { padding: 16px 18px; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.chip { min-height: 46px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line); background: #fff; font-size: 17px; }
+.chip.like[aria-pressed="true"] { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); font-weight: 700; }
+.chip.dislike[aria-pressed="true"] { background: var(--no-soft); border-color: var(--no); color: var(--no); font-weight: 700; }
+.memo { width: 100%; min-height: 90px; margin-top: 14px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; font-size: 17px; }
+.summary { padding: 20px 22px; font-size: 18px; white-space: pre-line; }
+.checklist { list-style: none; margin: 0; padding: 4px 18px; }
+.checklist li { padding: 10px 0 10px 30px; border-bottom: 1px dashed var(--line); position: relative; font-size: 16px; }
+.checklist li:last-child { border-bottom: 0; }
+.checklist li::before { content: "□"; position: absolute; left: 4px; color: var(--accent); }
+.checklist small { display: block; color: var(--muted); }
+.share-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 18px; }
+.show-foot { display: flex; align-items: center; gap: 12px; padding: 12px max(16px, env(safe-area-inset-left)) calc(12px + env(safe-area-inset-bottom)); background: var(--paper); border-top: 1px solid var(--line); position: sticky; bottom: 0; }
+.show-foot .note { flex: 1; font-size: 13px; color: var(--muted); text-align: center; }
+.show-foot .btn { min-width: 120px; min-height: 54px; font-size: 18px; }
+</style>
+</head>
+<body>
+
+<!-- ── 首頁 ── -->
+<main id="home" class="wrap" hidden>
+  <h1>空間風格提案</h1>
+  <p class="muted" style="margin:0">一張空屋照、幾種風格概念圖。在平板上讓業主點選風格與喜歡的元素，一鍵把需求摘要傳給你。</p>
+  <div class="hero-row">
+    <button class="btn primary" id="btn-demo" type="button">試玩示範案例</button>
+    <button class="btn" id="btn-new" type="button">建立新提案</button>
+    <button class="btn ghost" id="btn-import" type="button">匯入案子檔</button>
+    <input type="file" id="import-file" accept=".json,application/json" hidden>
+  </div>
+  <h2>這台裝置上的提案</h2>
+  <div class="plist" id="plist"></div>
+  <p class="muted" id="plist-empty" style="font-size:15px">還沒有提案。先試玩示範案例看看。</p>
+
+  <section class="card help">
+    <h3>設計師怎麼用</h3>
+    <ol>
+      <li>用「空間風格提案助手」（ChatGPT）生成概念圖，最後它會給你一段「提案內容」</li>
+      <li>按「建立新提案」→ 貼上提案內容 → 放進空屋照與概念圖</li>
+      <li>用「疊圖檢查」確認門窗位置沒被 AI 改掉，打勾驗收</li>
+      <li>見業主時按「開始展示」，讓業主自己點選；最後按「傳給設計師」</li>
+    </ol>
+    <p class="muted" style="font-size:14px;margin:10px 0 0">照片與提案只存在這台裝置的瀏覽器裡，不會上傳。換裝置請用「匯出案子檔」。概念圖不是施工圖。</p>
+  </section>
+</main>
+
+<!-- ── 設定（設計師） ── -->
+<main id="setup" class="wrap" hidden>
+  <div class="topbar">
+    <button class="btn small" type="button" data-go="home">← 回首頁</button>
+    <span class="sp"></span>
+    <button class="btn small" type="button" id="btn-export">匯出案子檔</button>
+    <button class="btn primary" type="button" id="btn-start">開始展示 →</button>
+  </div>
+
+  <section class="card sec">
+    <h2>1. 基本資料</h2>
+    <div class="grid2">
+      <label class="field"><span>工作室名稱</span><input id="f-studio" placeholder="例：森居室內設計"></label>
+      <label class="field"><span>案名</span><input id="f-project" placeholder="例：王先生｜客廳"></label>
+    </div>
+  </section>
+
+  <section class="card sec">
+    <h2>2. 貼上提案內容</h2>
+    <p class="muted" style="margin:0 0 8px;font-size:15px">把 ChatGPT「空間風格提案助手」最後給你的那一段（以 { 開頭）整段貼上。</p>
+    <label class="field"><textarea id="f-json" spellcheck="false" placeholder='{ "styles": [ ... ] }'></textarea></label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn primary small" type="button" id="btn-parse">套用提案內容</button>
+      <button class="btn small" type="button" id="btn-template">填入空白範本</button>
+    </div>
+    <p class="err" id="json-err"></p>
+  </section>
+
+  <section class="card sec">
+    <h2>3. 放照片</h2>
+    <p class="muted" style="margin:0 0 10px;font-size:15px">點方框選照片。手機大照片會自動縮小。</p>
+    <div style="max-width:420px"><button class="slot" type="button" id="slot-room"><span>＋ 空屋照（現況）</span></button></div>
+    <div id="style-slots"></div>
+    <input type="file" id="pick-file" accept="image/*" hidden>
+  </section>
+
+  <section class="card sec">
+    <h2>4. 業主勾選紀錄</h2>
+    <div class="results" id="results"></div>
+    <p class="muted" id="results-empty" style="font-size:15px;margin:0">還沒有紀錄。展示時業主按「傳給設計師」或「儲存」就會出現在這裡。</p>
+  </section>
+
+  <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+    <button class="btn small ghost" type="button" id="btn-delete" style="color:var(--no)">刪除這個提案</button>
+    <button class="btn primary" type="button" id="btn-start2">開始展示 →</button>
+  </div>
+</main>
+
+<!-- ── 展示（業主看） ── -->
+<div id="show" hidden>
+  <header class="show-head">
+    <div class="t"><small id="s-studio"></small><b id="s-project"></b></div>
+    <span class="badge">概念提案・非施工圖</span>
+    <button class="btn small ghost" type="button" id="btn-exit">結束</button>
+  </header>
+  <nav class="pills" id="pills" aria-label="步驟"></nav>
+  <div class="stage" id="stage"></div>
+  <footer class="show-foot">
+    <button class="btn" type="button" id="btn-prev">← 上一步</button>
+    <span class="note" id="foot-note"></span>
+    <button class="btn primary" type="button" id="btn-next">下一步 →</button>
+  </footer>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+"use strict";
+const QA_ITEMS = ["拍攝角度與格局", "門與落地窗", "窗戶", "冷氣", "天花板的樑／柱", "沒有新增門窗"];
+const STEPS = ["現況", "選風格", "對照", "比較", "偏好", "摘要"];
+const MAX_PICK = 3;
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+// ── IndexedDB（照片只存在這台裝置） ──
+const DB = {
+  db: null,
+  open() {
+    return new Promise((res, rej) => {
+      const r = indexedDB.open("style-proposal", 1);
+      r.onupgradeneeded = () => r.result.createObjectStore("projects", { keyPath: "id" });
+      r.onsuccess = () => { this.db = r.result; res(); };
+      r.onerror = () => rej(r.error);
+    });
+  },
+  tx(mode, fn) {
+    return new Promise((res, rej) => {
+      const t = this.db.transaction("projects", mode);
+      const out = fn(t.objectStore("projects"));
+      t.oncomplete = () => res(out?.result ?? out);
+      t.onerror = () => rej(t.error);
+    });
+  },
+  all() { return this.tx("readonly", (s) => s.getAll()); },
+  put(p) { p.updated = Date.now(); return this.tx("readwrite", (s) => s.put(p)); },
+  del(id) { return this.tx("readwrite", (s) => s.delete(id)); },
+};
+
+function toast(msg) {
+  const t = $("#toast"); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast.h); toast.h = setTimeout(() => { t.hidden = true; }, 2200);
+}
+function show(view) {
+  ["home", "setup", "show"].forEach((v) => { $("#" + v).hidden = v !== view; });
+  window.scrollTo(0, 0);
+}
+
+// 圖片縮到最長邊 1800px，存成 JPEG dataURL
+function fileToDataURL(file, max = 1800) {
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file);
+    const im = new Image();
+    im.onload = () => {
+      const k = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight));
+      const c = document.createElement("canvas");
+      c.width = Math.round(im.naturalWidth * k); c.height = Math.round(im.naturalHeight * k);
+      c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      res(c.toDataURL("image/jpeg", 0.85));
+    };
+    im.onerror = () => { URL.revokeObjectURL(url); rej(new Error("讀不到這張圖片")); };
+    im.src = url;
+  });
+}
+async function urlToDataURL(u) {
+  const b = await (await fetch(u)).blob();
+  return new Promise((res) => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(b); });
+}
+
+// ── 提案內容（ChatGPT 給的 JSON）解析 ──
+function parseProposal(text) {
+  const a = text.indexOf("{"), b = text.lastIndexOf("}");
+  if (a < 0 || b < a) throw new Error("找不到提案內容。請貼上以 { 開頭、} 結尾的那一整段。");
+  let d;
+  try { d = JSON.parse(text.slice(a, b + 1)); } catch (e) { throw new Error("提案內容格式有誤，可能沒有複製完整。請在 ChatGPT 按「複製」後整段貼上。"); }
+  const errs = [];
+  if (!Array.isArray(d.styles) || !d.styles.length) errs.push("缺少 styles（風格清單）");
+  else if (d.styles.length > 6) errs.push("風格最多 6 個");
+  (d.styles || []).forEach((s, i) => { if (!s || !s.name) errs.push(`第 ${i + 1} 個風格沒有 name（名稱）`); });
+  if (errs.length) throw new Error(errs.join("\n"));
+  return {
+    studio: d.studio || "", project: d.project || "",
+    styles: d.styles.map((s) => ({ name: String(s.name), tagline: s.tagline || "", note: s.note || "", compare: s.compare && typeof s.compare === "object" ? s.compare : {} })),
+    elements: Array.isArray(d.elements) ? d.elements.map(String).slice(0, 20) : [],
+    checklist: Array.isArray(d.checklist) ? d.checklist.map((c) => typeof c === "string" ? { item: c, detail: "" } : { item: c.item || "", detail: c.detail || "" }) : [],
+  };
+}
+const TEMPLATE = {
+  studio: "", project: "",
+  styles: [1, 2, 3].map((n) => ({ name: `風格${n}`, tagline: "一句話描述", note: "這張圖改了什麼、保留了什麼", compare: { "色調": "", "牆面與地坪方向": "", "家具重點": "", "燈光": "", "收納": "", "適合": "" } })),
+  elements: ["淺色木頭", "白牆", "很多植物", "暖色燈光", "藏起來的收納", "地毯"],
+  checklist: [{ item: "實際尺寸丈量", detail: "概念圖不是實際尺寸" }],
+};
+
+// ── 首頁 ──
+let projects = [];
+async function renderHome() {
+  projects = (await DB.all()).sort((a, b) => b.updated - a.updated);
+  const box = $("#plist"); box.innerHTML = "";
+  $("#plist-empty").hidden = projects.length > 0;
+  projects.forEach((p) => {
+    const el = document.createElement("div");
+    el.className = "card pitem";
+    el.innerHTML = `${p.room ? `<img src="${p.room}" alt="">` : `<img alt="">`}
+      <div class="meta"><b>${esc(p.project || "未命名提案")}</b><span class="muted" style="font-size:14px">${esc(p.studio)}｜${p.styles.length} 種風格｜${new Date(p.updated).toLocaleDateString("zh-TW")}</span></div>
+      <div class="acts"><button class="btn small primary" data-a="show">展示</button><button class="btn small" data-a="setup">設定</button></div>`;
+    el.querySelector('[data-a="show"]').onclick = () => startShow(p);
+    el.querySelector('[data-a="setup"]').onclick = () => openSetup(p);
+    box.appendChild(el);
+  });
+  show("home");
+}
+$("#btn-new").onclick = () => openSetup({ id: crypto.randomUUID?.() || String(Date.now()), studio: "", project: "", room: "", styles: [], elements: [], checklist: [], results: [], updated: Date.now() });
+$("#btn-demo").onclick = async () => {
+  try {
+    toast("載入示範案例…");
+    const d = await (await fetch("demo/project.json")).json();
+    const p = { id: "demo", ...parseProposal(JSON.stringify(d)), results: [] };
+    p.room = await urlToDataURL(d.demoImages.room);
+    for (let i = 0; i < p.styles.length; i++) {
+      const im = d.demoImages.styles[i];
+      p.styles[i].concept = await urlToDataURL(im.concept);
+      p.styles[i].ref = im.ref ? await urlToDataURL(im.ref) : "";
+      p.styles[i].qa = Object.fromEntries(QA_ITEMS.map((q) => [q, true]));
+    }
+    await DB.put(p);
+    startShow(p);
+  } catch (e) { toast("示範案例載入失敗：" + e.message); }
+};
+$("#btn-import").onclick = () => $("#import-file").click();
+$("#import-file").onchange = async (e) => {
+  const f = e.target.files[0]; e.target.value = "";
+  if (!f) return;
+  try {
+    const d = JSON.parse(await f.text());
+    if (d.format !== "style-proposal/v1" || !d.data) throw new Error("這不是提案案子檔");
+    const p = { ...d.data, id: crypto.randomUUID?.() || String(Date.now()) };
+    await DB.put(p); toast("已匯入"); renderHome();
+  } catch (err) { toast("匯入失敗：" + err.message); }
+};
+
+// ── 設定 ──
+let cur = null;
+function openSetup(p) {
+  cur = p;
+  $("#f-studio").value = p.studio; $("#f-project").value = p.project;
+  $("#f-json").value = p.styles.length ? JSON.stringify({ studio: p.studio, project: p.project, styles: p.styles.map(({ name, tagline, note, compare }) => ({ name, tagline, note, compare })), elements: p.elements, checklist: p.checklist }, null, 2) : "";
+  $("#json-err").textContent = "";
+  renderSlots(); renderResults(); show("setup");
+}
+const save = () => DB.put(cur);
+$("#f-studio").oninput = (e) => { cur.studio = e.target.value; save(); };
+$("#f-project").oninput = (e) => { cur.project = e.target.value; save(); };
+$("#btn-template").onclick = () => { $("#f-json").value = JSON.stringify(TEMPLATE, null, 2); };
+$("#btn-parse").onclick = async () => {
+  try {
+    const d = parseProposal($("#f-json").value);
+    const old = cur.styles;
+    cur.styles = d.styles.map((s, i) => ({ ...s, concept: old[i]?.concept || "", ref: old[i]?.ref || "", qa: old[i]?.qa || {} }));
+    cur.elements = d.elements; cur.checklist = d.checklist;
+    if (d.studio && !cur.studio) { cur.studio = d.studio; $("#f-studio").value = d.studio; }
+    if (d.project && !cur.project) { cur.project = d.project; $("#f-project").value = d.project; }
+    await save(); $("#json-err").textContent = ""; renderSlots();
+    toast(`已套用：${cur.styles.length} 種風格、${cur.elements.length} 個偏好元素`);
+  } catch (e) { $("#json-err").textContent = e.message; }
+};
+
+let pickTarget = null;
+function pick(target) { pickTarget = target; $("#pick-file").click(); }
+$("#pick-file").onchange = async (e) => {
+  const f = e.target.files[0]; e.target.value = "";
+  if (!f || !pickTarget) return;
+  try {
+    const url = await fileToDataURL(f);
+    if (pickTarget.kind === "room") cur.room = url; else cur.styles[pickTarget.i][pickTarget.kind] = url;
+    await save(); renderSlots();
+  } catch (err) { toast(err.message); }
+};
+function slotHTML(url, label, tag) {
+  return url ? `<img src="${url}" alt="${esc(label)}"><span class="tag">${esc(tag)}・點一下換照片</span>` : `<span>＋ ${esc(label)}</span>`;
+}
+function renderSlots() {
+  const r = $("#slot-room");
+  r.className = "slot" + (cur.room ? " filled" : ""); r.innerHTML = slotHTML(cur.room, "空屋照（現況）", "現況");
+  r.onclick = () => pick({ kind: "room" });
+  const box = $("#style-slots"); box.innerHTML = "";
+  if (!cur.styles.length) { box.innerHTML = `<p class="muted" style="font-size:15px">先在第 2 步貼上提案內容，這裡就會出現每個風格的照片欄位。</p>`; return; }
+  cur.styles.forEach((s, i) => {
+    const done = QA_ITEMS.every((q) => s.qa?.[q]);
+    const el = document.createElement("div");
+    el.className = "style-block";
+    el.innerHTML = `<h3>${esc(s.name)} <span class="muted" style="font-size:14px;font-weight:400">${esc(s.tagline)}</span></h3>
+      <div class="grid2">
+        <button class="slot${s.concept ? " filled" : ""}" type="button" data-k="concept">${slotHTML(s.concept, "概念圖（必填）", "概念圖")}</button>
+        <button class="slot${s.ref ? " filled" : ""}" type="button" data-k="ref">${slotHTML(s.ref, "風格參考圖（選填，給業主選風格用）", "參考圖")}</button>
+      </div>
+      ${cur.room && s.concept ? `
+      <details${done ? "" : " open"} style="margin-top:10px">
+        <summary><b>疊圖檢查</b>：門窗位置有沒有被 AI 改掉？ ${done ? `<span class="okline">✓ 已驗收</span>` : `<span class="err">尚未驗收</span>`}</summary>
+        <div class="overlay"><img src="${s.concept}" alt=""><img class="top" src="${cur.room}" alt="" style="opacity:.5"></div>
+        <label style="display:flex;gap:10px;align-items:center;font-size:15px;margin-top:6px">現況透明度 <input type="range" min="0" max="100" value="50" data-op style="flex:1;accent-color:var(--accent)"></label>
+        <p class="muted" style="font-size:14px;margin:4px 0 0">左右拉，看現況的門、窗、冷氣、樑有沒有和概念圖重疊。沒對齊就回 ChatGPT 重畫。</p>
+        <div class="qa">${QA_ITEMS.map((q) => `<label><input type="checkbox" data-q="${esc(q)}"${s.qa?.[q] ? " checked" : ""}>${esc(q)}</label>`).join("")}</div>
+      </details>` : ""}`;
+    el.querySelector('[data-k="concept"]').onclick = () => pick({ kind: "concept", i });
+    el.querySelector('[data-k="ref"]').onclick = () => pick({ kind: "ref", i });
+    const op = el.querySelector("[data-op]");
+    if (op) op.oninput = () => { el.querySelector(".overlay .top").style.opacity = op.value / 100; };
+    el.querySelectorAll("[data-q]").forEach((c) => c.onchange = async () => {
+      s.qa = s.qa || {}; s.qa[c.dataset.q] = c.checked; await save();
+      const ok = QA_ITEMS.every((q) => s.qa[q]);
+      el.querySelector("summary").lastElementChild.outerHTML = ok ? `<span class="okline">✓ 已驗收</span>` : `<span class="err">尚未驗收</span>`;
+    });
+    box.appendChild(el);
+  });
+}
+function renderResults() {
+  const box = $("#results"); box.innerHTML = "";
+  const rs = (cur.results || []).slice().reverse();
+  $("#results-empty").hidden = rs.length > 0;
+  rs.forEach((r) => { const c = document.createElement("div"); c.className = "card"; c.textContent = r.text; box.appendChild(c); });
+}
+function readyErrors(p) {
+  const e = [];
+  if (!p.room) e.push("還沒放空屋照");
+  if (!p.styles.length) e.push("還沒貼上提案內容");
+  p.styles.forEach((s) => { if (!s.concept) e.push(`「${s.name}」還沒放概念圖`); });
+  return e;
+}
+[$("#btn-start"), $("#btn-start2")].forEach((b) => b.onclick = () => {
+  const e = readyErrors(cur);
+  if (e.length) { toast(e[0]); return; }
+  const notQA = cur.styles.filter((s) => !QA_ITEMS.every((q) => s.qa?.[q])).map((s) => s.name);
+  if (notQA.length && !confirm(`「${notQA.join("、")}」還沒完成疊圖驗收，確定要展示嗎？`)) return;
+  startShow(cur);
+});
+$("#btn-export").onclick = () => {
+  const blob = new Blob([JSON.stringify({ format: "style-proposal/v1", data: cur })], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = `${cur.project || "提案"}.proposal.json`;
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+};
+$("#btn-delete").onclick = async () => {
+  if (!confirm("刪除後無法復原（照片與業主勾選紀錄都會刪除）。確定刪除？")) return;
+  await DB.del(cur.id); renderHome();
+};
+document.querySelectorAll('[data-go="home"]').forEach((b) => b.onclick = renderHome);
+
+// ── 展示 ──
+let S = null; // 展示狀態
+function startShow(p) {
+  if (readyErrors(p).length) { openSetup(p); toast(readyErrors(p)[0]); return; }
+  cur = p;
+  S = { step: 0, picks: [], view: 0, fav: null, likes: new Set(), dislikes: new Set(), memo: "", pos: 50, saved: false, ar: 1.5 };
+  const probe = new Image();
+  probe.onload = () => { S.ar = (probe.naturalWidth / probe.naturalHeight).toFixed(3); if (S.step === 0 || S.step === 2) renderStep(); };
+  probe.src = p.room;
+  $("#s-studio").textContent = p.studio || "";
+  $("#s-project").textContent = p.project || "風格提案";
+  const allQA = p.styles.every((s) => QA_ITEMS.every((q) => s.qa?.[q]));
+  $("#foot-note").textContent = allQA ? "設計師已逐張檢查門窗位置｜概念圖不是施工圖" : "概念圖不是施工圖";
+  show("show"); renderStep();
+}
+$("#btn-exit").onclick = () => { if (confirm("結束展示？")) (cur.id === "demo" ? renderHome() : openSetup(cur)); };
+$("#btn-prev").onclick = () => { if (S.step > 0) { S.step--; renderStep(); } };
+$("#btn-next").onclick = () => {
+  if (S.step === 1 && !S.picks.length) { toast("先點選至少一個喜歡的風格"); return; }
+  if (S.step < STEPS.length - 1) { S.step++; renderStep(); }
+};
+function picked() { return S.picks.map((i) => cur.styles[i]); }
+function renderStep() {
+  const pills = $("#pills"); pills.innerHTML = "";
+  STEPS.forEach((t, i) => {
+    const b = document.createElement("button");
+    b.className = "pill"; b.type = "button"; b.textContent = `${i + 1} ${t}`;
+    if (i === S.step) b.setAttribute("aria-current", "step");
+    b.onclick = () => { if (i >= 2 && !S.picks.length) { toast("先點選至少一個喜歡的風格"); return; } S.step = i; renderStep(); };
+    pills.appendChild(b);
+  });
+  $("#btn-prev").disabled = S.step === 0;
+  $("#btn-next").hidden = S.step === STEPS.length - 1;
+  const st = $("#stage");
+  const p = cur;
+  if (S.step === 0) {
+    st.innerHTML = `<p class="lead">這是您家目前的樣子。接下來我們用圖片找出您喜歡的方向。</p>
+      <div class="big-photo fit" style="--ar:${S.ar};--chrome:290px"><img src="${p.room}" alt="空屋現況"></div>`;
+  } else if (S.step === 1) {
+    st.innerHTML = `<p class="lead">不用想風格叫什麼，<b>點您喜歡的圖</b>就好（最多 ${MAX_PICK} 個）。</p>
+      <div class="choices" id="choices"></div>
+      <div style="margin-top:14px"><button class="btn small" type="button" id="pick-all">${p.styles.length <= MAX_PICK ? "全部都看看" : `先看前 ${MAX_PICK} 個`}</button></div>`;
+    const box = $("#choices");
+    p.styles.forEach((s, i) => {
+      const b = document.createElement("button");
+      b.className = "choice"; b.type = "button"; b.setAttribute("aria-pressed", S.picks.includes(i));
+      b.innerHTML = `<img src="${s.ref || s.concept}" alt="${esc(s.name)}"><span>${esc(s.name)}<small>${esc(s.tagline)}</small></span>`;
+      b.onclick = () => {
+        if (S.picks.includes(i)) S.picks = S.picks.filter((x) => x !== i);
+        else if (S.picks.length < MAX_PICK) S.picks.push(i);
+        else { toast(`最多選 ${MAX_PICK} 個，先取消一個`); return; }
+        b.setAttribute("aria-pressed", S.picks.includes(i));
+      };
+      box.appendChild(b);
+    });
+    $("#pick-all").onclick = () => { S.picks = p.styles.map((_, i) => i).slice(0, MAX_PICK); renderStep(); };
+  } else if (S.step === 2) {
+    if (!S.picks.includes(S.view)) S.view = S.picks[0];
+    const s = p.styles[S.view];
+    st.innerHTML = `<p class="lead">拖曳中間的把手，左右對照<b>現在</b>和<b>改造後的感覺</b>。</p>
+      <div class="tabs" id="tabs"></div>
+      <div class="compare fit" id="cmp" style="--pos:${S.pos}%;--ar:${S.ar};--chrome:400px">
+        <img src="${p.room}" alt="現況">
+        <div class="after"><img src="${s.concept}" alt="${esc(s.name)}概念圖"></div>
+        <div class="bar"></div><span class="lbl l">現在</span><span class="lbl r">${esc(s.name)}</span>
+      </div>
+      <div class="fav-row"><button class="fav" type="button" id="fav" aria-pressed="${S.fav === S.view}">♥ 我最喜歡這個</button><span class="muted" style="font-size:15px">${esc(s.note)}</span></div>`;
+    const tabs = $("#tabs");
+    S.picks.forEach((i) => {
+      const t = document.createElement("button");
+      t.className = "tab"; t.type = "button"; t.setAttribute("aria-selected", i === S.view);
+      t.innerHTML = esc(p.styles[i].name) + (S.fav === i ? ' <span class="heart">♥</span>' : "");
+      t.onclick = () => { S.view = i; renderStep(); };
+      tabs.appendChild(t);
+    });
+    const cmp = $("#cmp");
+    const setPos = (x) => { const r = cmp.getBoundingClientRect(); S.pos = Math.max(0, Math.min(100, ((x - r.left) / r.width) * 100)); cmp.style.setProperty("--pos", S.pos + "%"); };
+    cmp.addEventListener("pointerdown", (e) => { cmp.setPointerCapture(e.pointerId); setPos(e.clientX); });
+    cmp.addEventListener("pointermove", (e) => { if (e.buttons || e.pointerType === "touch") setPos(e.clientX); });
+    $("#fav").onclick = () => { S.fav = S.fav === S.view ? null : S.view; renderStep(); };
+  } else if (S.step === 3) {
+    const ps = picked();
+    const rows = [...new Set(ps.flatMap((s) => Object.keys(s.compare)))];
+    st.innerHTML = `<p class="lead">三個方向差在哪裡，一張表看完。材質是<b>候選方向</b>，實際品項由設計師和您確認。</p>
+      <div class="card scroll"><table class="diff"><thead><tr><th></th>${ps.map((s) => `<th>${esc(s.name)}${S.fav === p.styles.indexOf(s) ? " ♥" : ""}</th>`).join("")}</tr></thead>
+      <tbody>${rows.map((r) => `<tr><th>${esc(r)}</th>${ps.map((s) => `<td>${esc(s.compare[r] || "—")}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  } else if (S.step === 4) {
+    st.innerHTML = `<p class="lead">有沒有特別<b>喜歡</b>或<b>不喜歡</b>的東西？點一下就好。</p>
+      <div class="pref-grid">
+        <div class="card"><b>喜歡</b><div class="chips" id="likes"></div></div>
+        <div class="card"><b>不喜歡</b><div class="chips" id="dislikes"></div></div>
+      </div>
+      <textarea class="memo" id="memo" placeholder="還有想跟設計師說的嗎？（例：家裡有貓、希望好打掃、預算有限）">${esc(S.memo)}</textarea>`;
+    const mk = (box, set, other, kind) => p.elements.forEach((el) => {
+      const c = document.createElement("button");
+      c.className = "chip " + kind; c.type = "button"; c.textContent = el; c.setAttribute("aria-pressed", set.has(el));
+      c.onclick = () => { if (set.has(el)) set.delete(el); else { set.add(el); other.delete(el); } renderStep(); };
+      box.appendChild(c);
+    });
+    mk($("#likes"), S.likes, S.dislikes, "like");
+    mk($("#dislikes"), S.dislikes, S.likes, "dislike");
+    $("#memo").oninput = (e) => { S.memo = e.target.value; };
+  } else {
+    const text = summaryText();
+    st.innerHTML = `<p class="lead">這是剛剛的選擇。按下面的按鈕傳給設計師，下次的提案就從這裡開始。</p>
+      <div class="card summary" id="sum">${esc(text)}</div>
+      <div class="share-row">
+        <button class="btn line" type="button" id="share-line">用 LINE 傳給設計師</button>
+        <button class="btn" type="button" id="share-copy">複製文字</button>
+        <button class="btn" type="button" id="share-save">${S.saved ? "✓ 已儲存" : "儲存紀錄"}</button>
+      </div>
+      ${p.checklist.length ? `<h3>施工前還要現場確認</h3><ul class="card checklist">${p.checklist.map((c) => `<li>${esc(c.item)}${c.detail ? `<small>${esc(c.detail)}</small>` : ""}</li>`).join("")}</ul>` : ""}`;
+    $("#share-line").onclick = async () => { await saveResult(text); window.open("https://line.me/R/share?text=" + encodeURIComponent(text), "_blank", "noopener"); };
+    $("#share-copy").onclick = async () => {
+      await saveResult(text);
+      try { await navigator.clipboard.writeText(text); toast("已複製"); }
+      catch { const r = document.createRange(); r.selectNodeContents($("#sum")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); toast("已選取，請按複製"); }
+    };
+    $("#share-save").onclick = async () => { await saveResult(text); renderStep(); toast("已儲存到這個提案"); };
+  }
+  window.scrollTo(0, 0);
+}
+function summaryText() {
+  const p = cur, ps = picked();
+  const d = new Date();
+  const lines = [`【${p.project || "風格提案"}】業主偏好`, `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`];
+  lines.push(`有興趣的風格：${ps.map((s) => s.name).join("、") || "—"}`);
+  lines.push(`最喜歡：${S.fav !== null ? p.styles[S.fav].name : "（沒有特別指定）"}`);
+  lines.push(`喜歡：${[...S.likes].join("、") || "—"}`);
+  lines.push(`不喜歡：${[...S.dislikes].join("、") || "—"}`);
+  if (S.memo.trim()) lines.push(`想說的話：${S.memo.trim()}`);
+  return lines.join("\n");
+}
+async function saveResult(text) {
+  if (S.saved && S.savedText === text) return;
+  cur.results = cur.results || [];
+  if (S.saved) cur.results.pop();
+  cur.results.push({ at: Date.now(), text });
+  S.saved = true; S.savedText = text;
+  await DB.put(cur);
+}
+
+// ── 啟動 ──
+DB.open().then(() => {
+  const q = new URLSearchParams(location.search);
+  if (q.get("demo") === "1") $("#btn-demo").click(); else renderHome();
+}).catch(() => { document.body.innerHTML = '<p style="padding:24px">這個瀏覽器不支援本機儲存（可能是無痕模式）。請改用一般模式開啟。</p>'; });
+</script>
+</body>
+</html>

@@ -167,6 +167,13 @@ h2 { font-size: clamp(26px, 4.4vw, 38px); line-height: 1.3; margin: 0 0 12px; fo
 .pv-tabs { display: flex; gap: 8px; margin-bottom: 4px; }
 .pv-tabs button { font: inherit; font-size: 14px; padding: 7px 16px; border-radius: 999px; border: 1px solid var(--edge); background: transparent; color: var(--muted); cursor: pointer; }
 .pv-tabs button[aria-selected="true"] { background: rgba(6, 199, 85, 0.12); border-color: rgba(6, 199, 85, 0.45); color: var(--text, #fff); }
+.case-quote .aq-feat { gap: 10px; margin-top: 6px; }
+.case-quote .aq-feat li { font-size: 16px; line-height: 1.6; }
+.case-quote .aq-feat strong { color: var(--text, #fff); }
+.aq-video { position: relative; width: 100%; max-width: 380px; margin: 0 auto; aspect-ratio: 9 / 16; border-radius: 16px; overflow: hidden; border: 1px solid var(--edge); background: #f3eee6; }
+.aq-video video { display: block; width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
+.aq-sound { position: absolute; right: 12px; bottom: 12px; font: inherit; font-size: 14px; font-weight: 700; padding: 8px 14px; border-radius: 999px; border: 0; background: rgba(0, 0, 0, .6); color: #fff; cursor: pointer; }
+.case-quote .media-note { text-align: center; }
 @media (max-width: 860px) { .case-interior { grid-template-columns: 1fr; } }
 .cta-mini { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
 .cta-mini .btn { min-height: 46px; font-size: 15px; padding: 0 18px; }
@@ -272,6 +279,7 @@ footer a { color: var(--cyan); text-decoration: none; margin: 0 8px; }
     <ul>
       <li><a href="#interior">室內設計</a></li>
       <li><a href="#poster-video">海報變短片</a></li>
+      <li><a href="#ai-quote">AI 工程助手</a></li>
       <li><a href="#cases">精選案例</a></li>
       <li><a href="#works">更多作品</a></li>
       <li><a href="#services">服務項目</a></li>
@@ -323,7 +331,7 @@ footer a { color: var(--cyan); text-decoration: none; margin: 0 8px; }
   <div class="wrap">
     <p class="eyebrow">Featured cases</p>
     <h2>精選案例</h2>
-    <p class="lead">給工作室的兩個新方案，加上已經上線、每天有人在用的兩個產品。</p>
+    <p class="lead">給工作室的三個新方案，加上已經上線、每天有人在用的兩個產品。</p>
 
     <!-- 案例 0：室內設計｜空間風格提案（只講要解決的痛點：設計師與業主的來回溝通） -->
     <article class="panel case case-interior reveal" id="interior">
@@ -385,6 +393,32 @@ footer a { color: var(--cyan); text-decoration: none; margin: 0 8px; }
           </video></div><figcaption>招生短片</figcaption></figure>
           <p class="media-note">2026 年 10 月實際開課的招生素材（場次已結束）</p>
         </div>
+      </div>
+    </article>
+
+    <!-- 案例 0c：AI 工程助手｜現場報價草稿（W15；示範畫面 AI 生成、單價為示範） -->
+    <article class="panel case case-interior case-quote reveal" id="ai-quote">
+      <div>
+        <div class="case-head"><span class="tag live">新方案</span><span class="tag">工程・統包・室內設計</span></div>
+        <h3 class="pain-title">AI 工程助手</h3>
+        <p class="pain-sub">細節我處理，決策交給你</p>
+        <ul class="feat aq-feat">
+          <li><strong>匯入你的規則</strong>：單價表、報價準則、客戶優惠、原料進貨價、叫貨量級距</li>
+          <li><strong>現場邊拍邊講</strong>，自動整理成一條條工項</li>
+          <li><strong>缺資料會追問</strong>：只問會影響金額的尺寸與規格</li>
+          <li><strong>提醒常漏項目</strong>：拆除清運、滿水測試、門片修短…</li>
+          <li><strong>開了才知道的另列待確認</strong>，不算進總價</li>
+          <li><strong>產出分項估價單草稿</strong>，師傅確認後才送出</li>
+        </ul>
+      </div>
+      <div class="case-media">
+        <div class="aq-video">
+          <video id="ai-quote-video" class="js-autovid" muted loop playsinline preload="none" poster="img/works/ai-quote-poster.jpg?v=1" aria-label="示範：師傅在老屋浴室、客廳、廚房邊拍邊講，AI 匯入老闆的規則後整理工項、追問、提醒漏項、列出待確認，最後產出估價單草稿">
+            <source data-src="img/works/ai-quote.mp4?v=1" type="video/mp4">
+          </video>
+          <button type="button" class="aq-sound" id="ai-quote-sound" aria-pressed="false">開啟聲音</button>
+        </div>
+        <p class="media-note">示範畫面為 AI 生成；單價為示範，實際以你的價目表為準</p>
       </div>
     </article>
 
@@ -641,6 +675,20 @@ document.querySelectorAll('#interior-video, .js-autovid').forEach((vid) => {
       else vid.pause();
     }), { threshold: 0.35 }).observe(vid);
   }
+});
+
+// AI 工程助手：旁白是重點，提供開／關聲音（自動播放時一律靜音）
+const aqVid = document.getElementById('ai-quote-video');
+const aqBtn = document.getElementById('ai-quote-sound');
+aqBtn.addEventListener('click', () => {
+  aqVid.muted = !aqVid.muted;
+  if (!aqVid.muted) {
+    const s = aqVid.querySelector('source');
+    if (!s.src) { s.src = s.dataset.src; aqVid.load(); }
+    aqVid.play().catch(() => {});
+  }
+  aqBtn.textContent = aqVid.muted ? '開啟聲音' : '關閉聲音';
+  aqBtn.setAttribute('aria-pressed', String(!aqVid.muted));
 });
 
 // 海報變短片：切換範例；隱藏那組的影片暫停，新顯示那組由上面的觀察器接手播放
